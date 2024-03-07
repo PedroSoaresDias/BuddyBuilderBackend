@@ -5,6 +5,17 @@ const getAllUsers = async () => {
     return user.rows;
 }
 
+const addUser = async (user) => {
+    const { email, apelido, senha } = user;
+
+    const query = "INSERT INTO tb_usuario(email, apelido, senha) VALUES($1, $2, $3)";
+    const values = [email, apelido, senha];
+
+    const addUser = await pool.query(query, values);
+    return addUser;
+}
+
 module.exports = {
-    getAllUsers
+    getAllUsers,
+    addUser,
 }
