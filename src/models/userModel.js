@@ -15,7 +15,18 @@ const addUser = async (user) => {
     return addUser;
 }
 
+const updateUser = async (id, user) => {
+    const { email, apelido, senha } = user;
+
+    const query = "UPDATE tb_usuario SET email = $1, apelido = $2, senha = $3 WHERE id = $4";
+    const values = [email, apelido, senha, id];
+
+    const updateUser = await pool.query(query, values);
+    return updateUser;
+}
+
 module.exports = {
     getAllUsers,
     addUser,
+    updateUser,
 }

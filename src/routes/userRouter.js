@@ -14,4 +14,11 @@ routerUser.post("/users",
     userController.addUser
 );
 
+routerUser.put("/users/:id",
+    userMiddleware.validateFieldEmail,
+    userMiddleware.validateFieldNickname,
+    userMiddleware.validateFieldPassword,
+    userController.updateUser
+)
+
 module.exports = routerUser;
