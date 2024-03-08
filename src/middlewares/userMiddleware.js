@@ -34,7 +34,7 @@ const validateFieldPassword = (req, res, next) => {
     }
 
     if (body.senha === '') {
-        return res.status(400).json({ message: 'A senha não pode ser vazio' });
+        return res.status(400).json({ message: 'A senha não pode ser vazia' });
     }
 
     next();

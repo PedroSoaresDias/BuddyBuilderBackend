@@ -17,7 +17,7 @@ const getUserById = async (req, res) => {
         return res.status(200).json(userById);
     } catch (err) {
         console.error("Erro ao obter os dados do usuário especifico: ", err);
-        res.status(500).json({ error: "Erro ao obter os dados do usuário especifico" });
+        res.status(500).json({ error: "Erro ao obter os dados do usuário especifico." });
     }
 }
 
@@ -34,7 +34,6 @@ const addUser = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
-    
         await userModel.updateUser(id, req.body);
         return res.status(204).json()
     } catch (err) {
@@ -43,9 +42,21 @@ const updateUser = async (req, res) => {
     }
 }
 
+const deleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await userModel.deleteUser(id);
+        return res.status(204).json();
+    } catch (err) {
+        console.error("Erro ao excluir o usuário do banco de dados: ", err);
+        res.status(500).json({error: "Erro ao excluir o usuário do banco de dados."})
+    }
+}
+
 module.exports = {
     getAllUsers,
     getUserById,
     addUser,
     updateUser,
+    deleteUser
 }

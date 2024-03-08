@@ -21,6 +21,8 @@ routerUser.put("/users/:id",
     userMiddleware.validateFieldNickname,
     userMiddleware.validateFieldPassword,
     userController.updateUser
-)
+);
+
+routerUser.delete("/users/:id", userController.deleteUser);
 
 module.exports = routerUser;

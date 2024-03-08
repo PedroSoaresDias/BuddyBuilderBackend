@@ -30,9 +30,16 @@ const updateUser = async (id, user) => {
     return updateUser;
 }
 
+const deleteUser = async (id) => {
+    const query = "DELETE FROM tb_usuario WHERE id = $1";
+    const removeUser = await pool.query(query, [id]);
+    return removeUser;
+}
+
 module.exports = {
     getAllUsers,
     getUserById,
     addUser,
     updateUser,
+    deleteUser
 }
