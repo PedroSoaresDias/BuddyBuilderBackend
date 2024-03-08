@@ -7,6 +7,8 @@ const userMiddleware = require("../middlewares/userMiddleware")
 
 routerUser.get("/users", userController.getAllUsers);
 
+routerUser.get("/users/:id", userController.getUserById);
+
 routerUser.post("/users",
     userMiddleware.validateFieldEmail,
     userMiddleware.validateFieldNickname,

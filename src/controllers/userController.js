@@ -5,8 +5,19 @@ const getAllUsers = async (_req, res) => {
         const users = await userModel.getAllUsers();
         return res.status(200).json(users);
     } catch (err) {
-        console.error("Erro ao obter os dados do banco de dados: ", err);
-        res.status(500).json({error: "Erro ao obter os dados do usuário no banco de dados."})
+        console.error("Erro ao obter os dados do usuário no banco de dados: ", err);
+        res.status(500).json({ error: "Erro ao obter os dados do usuário no banco de dados." });
+    }
+}
+
+const getUserById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userById = await userModel.getUserById(id);
+        return res.status(200).json(userById);
+    } catch (err) {
+        console.error("Erro ao obter os dados do usuário especifico: ", err);
+        res.status(500).json({ error: "Erro ao obter os dados do usuário especifico" });
     }
 }
 
@@ -34,6 +45,7 @@ const updateUser = async (req, res) => {
 
 module.exports = {
     getAllUsers,
+    getUserById,
     addUser,
     updateUser,
 }

@@ -5,6 +5,11 @@ const getAllUsers = async () => {
     return user.rows;
 }
 
+const getUserById = async (id) => {
+    const user = await pool.query("SELECT * FROM tb_usuario WHERE id = $1", [id]);
+    return user.rows;
+}
+
 const addUser = async (user) => {
     const { email, apelido, senha } = user;
 
@@ -27,6 +32,7 @@ const updateUser = async (id, user) => {
 
 module.exports = {
     getAllUsers,
+    getUserById,
     addUser,
     updateUser,
 }
