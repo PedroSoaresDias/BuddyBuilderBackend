@@ -7,7 +7,8 @@ const getAllUsers = async () => {
 
 const getUserById = async (id) => {
     const user = await pool.query("SELECT * FROM tb_usuario WHERE id = $1", [id]);
-    return user.rows;
+    if (user.rows.length === 0) return null;
+    return user.rows[0];
 }
 
 const addUser = async (user) => {
