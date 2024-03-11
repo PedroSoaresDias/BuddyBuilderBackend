@@ -12,4 +12,9 @@ routerExercicio.post("/exercicio",
     exercicioController.addExercicio
 );
 
+routerExercicio.put("/exercicio/:id",
+    exercicioMiddleware.validateFieldExercicio,
+    exercicioController.updateExercicio
+)
+
 module.exports = routerExercicio;

@@ -13,7 +13,18 @@ const addExercicio = async (exercicio) => {
     return addExercicio;
 }
 
+const updateExercicio = async (id, exercicio) => {
+    const { nomeExercicio } = exercicio;
+
+    const query = "UPDATE tb_exercicio SET nome_exercicio = $1 WHERE id = $2";
+    const values = [nomeExercicio, id];
+
+    const updateExercicio = await pool.query(query, values);
+    return updateExercicio;
+}
+
 module.exports = {
     getAllExercicios,
-    addExercicio
+    addExercicio,
+    updateExercicio
 }

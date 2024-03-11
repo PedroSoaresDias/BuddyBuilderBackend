@@ -20,7 +20,19 @@ const addExercicio = async (req, res) => {
     }
 }
 
+const updateExercicio = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await exercicioModel.updateExercicio(id, req.body);
+        return res.status(204).json();
+    } catch (err) {
+        console.error("Erro ao atualizar o exercicio no banco de dados.", err);
+        res.status(500).json({error: "Erro ao atualizar o exercicio no banco de dados."})
+    }
+}
+
 module.exports = {
     getAllExercicios,
-    addExercicio
+    addExercicio,
+    updateExercicio
 }
