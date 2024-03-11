@@ -15,7 +15,7 @@ const getUserById = async (req, res) => {
         const { id } = req.params;
         const userById = await userModel.getUserById(id);
 
-        if (!userById) return res.status(404).json({ error: "Usuário não encontrado" });
+        if (!userById) return res.status(404).json({ message: "Usuário não encontrado" });
 
         return res.status(200).json(userById);
     } catch (err) {
@@ -39,7 +39,7 @@ const updateUser = async (req, res) => {
         const { id } = req.params;
         const userById = await userModel.getUserById(id);
 
-        if (!userById) return res.status(404).json({ error: "Usuário não encontrado" });
+        if (!userById) return res.status(404).json({ message: "Usuário não encontrado" });
 
         await userModel.updateUser(id, req.body);
         return res.status(204).json()
@@ -54,7 +54,7 @@ const deleteUser = async (req, res) => {
         const { id } = req.params;
         const userById = await userModel.getUserById(id);
 
-        if (!userById) return res.status(404).json({ error: "Usuário não encontrado" });
+        if (!userById) return res.status(404).json({ message: "Usuário não encontrado" });
 
         await userModel.deleteUser(id);
         return res.status(204).json();

@@ -5,6 +5,12 @@ const getAllExercicios = async () => {
     return exercicio.rows; 
 }
 
+const getExercicioById = async (id) => {
+    const exercicioById = await pool.query("SELECT * FROM tb_exercicio WHERE id = $1", [id]);
+    if (exercicioById.rows.length === 0) return null;
+    return exercicioById.rows[0];
+}
+
 const addExercicio = async (exercicio) => {
     const { nomeExercicio } = exercicio;
 
@@ -25,6 +31,7 @@ const updateExercicio = async (id, exercicio) => {
 
 module.exports = {
     getAllExercicios,
+    getExercicioById,
     addExercicio,
     updateExercicio
 }

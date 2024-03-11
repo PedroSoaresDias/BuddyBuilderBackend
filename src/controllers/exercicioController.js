@@ -6,7 +6,21 @@ const getAllExercicios = async (_req, res) => {
         res.status(200).json(exercicio);
     } catch (err) {
         console.error("Erro ao carregar os exercícios no banco de dados.", err);
-        res.status(500).json({ error: "Erro ao carregar os exercícios no banco de dados" });
+        res.status(500).json({ error: "Erro ao carregar os exercícios no banco de dados." });
+    }
+}
+
+const getExercicioById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const exercicioById = await exercicioModel.getExercicioById(id);
+
+        if (!exercicioById) return res.status(404).json({ message: "Exercício não encontrado" });
+
+        return res.status(200).json(exercicioById);        
+    } catch (err) {
+        console.error("Erro ao carregar o exercício especifico no banco de dados.", err);
+        res.status(500).json({ error: "Erro ao carregar o exercício especifico no banco de dados." });
     }
 }
 
@@ -23,6 +37,10 @@ const addExercicio = async (req, res) => {
 const updateExercicio = async (req, res) => {
     try {
         const { id } = req.params;
+        const exercicioById = await exercicioModel.getExercicioById(id);
+
+        if (!exercicioById) return res.status(404).json({ message: "Exercício não encontrado" });
+
         await exercicioModel.updateExercicio(id, req.body);
         return res.status(204).json();
     } catch (err) {
@@ -33,6 +51,7 @@ const updateExercicio = async (req, res) => {
 
 module.exports = {
     getAllExercicios,
+    getExercicioById,
     addExercicio,
     updateExercicio
 }
