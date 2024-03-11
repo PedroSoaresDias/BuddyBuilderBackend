@@ -7,7 +7,6 @@ const getAllExercicios = async () => {
 
 const getExercicioById = async (id) => {
     const exercicioById = await pool.query("SELECT * FROM tb_exercicio WHERE id = $1", [id]);
-    if (exercicioById.rows.length === 0) return null;
     return exercicioById.rows[0];
 }
 
@@ -29,9 +28,16 @@ const updateExercicio = async (id, exercicio) => {
     return updateExercicio;
 }
 
+const deleteExercicio = async (id) => {
+    const query = "DELETE FROM tb_exercicio WHERE id = $1";
+    const deleteExercicio = pool.query(query, [id]);
+    return deleteExercicio;
+}
+
 module.exports = {
     getAllExercicios,
     getExercicioById,
     addExercicio,
-    updateExercicio
+    updateExercicio,
+    deleteExercicio
 }

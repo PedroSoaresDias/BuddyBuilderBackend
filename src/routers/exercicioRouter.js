@@ -19,4 +19,6 @@ routerExercicio.put("/exercicio/:id",
     exercicioController.updateExercicio
 );
 
+routerExercicio.delete("/exercicio/:id", exercicioController.deleteExercicio);
+
 module.exports = routerExercicio;
