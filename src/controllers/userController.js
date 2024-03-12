@@ -6,7 +6,7 @@ const getAllUsers = async (_req, res) => {
         return res.status(200).json(users);
     } catch (err) {
         console.error("Erro ao obter os dados do usuário no banco de dados: ", err);
-        res.status(500).json({ error: "Erro ao obter os dados do usuário no banco de dados." });
+        return res.status(500).json({ error: "Erro ao obter os dados do usuário no banco de dados." });
     }
 }
 
@@ -20,7 +20,7 @@ const getUserById = async (req, res) => {
         return res.status(200).json(userById);
     } catch (err) {
         console.error("Erro ao obter os dados do usuário especifico: ", err);
-        res.status(500).json({ error: "Erro ao obter os dados do usuário especifico." });
+        return res.status(500).json({ error: "Erro ao obter os dados do usuário especifico." });
     }
 }
 
@@ -30,7 +30,7 @@ const addUser = async (req, res) => {
         return res.status(201).json(addUser);
     } catch (err) {
         console.error("Erro ao adicionar o usuário no banco de dados: ", err);
-        res.status(500).json({ error: "Erro ao adicionar o usuário no banco de dados." });
+        return res.status(500).json({ error: "Erro ao adicionar o usuário no banco de dados." });
     }
 }
 
@@ -45,7 +45,7 @@ const updateUser = async (req, res) => {
         return res.status(204).json()
     } catch (err) {
         console.error("Erro ao atualizar os dados do usuário no banco de dados: ", err);
-        res.status(500).json({error: "Erro ao atualizar os dados do usuário no banco de dados."})
+        return res.status(500).json({error: "Erro ao atualizar os dados do usuário no banco de dados."})
     }
 }
 
@@ -60,7 +60,7 @@ const deleteUser = async (req, res) => {
         return res.status(204).json();
     } catch (err) {
         console.error("Erro ao excluir o usuário do banco de dados: ", err);
-        res.status(500).json({error: "Erro ao excluir o usuário do banco de dados."})
+        return res.status(500).json({error: "Erro ao excluir o usuário do banco de dados."})
     }
 }
 

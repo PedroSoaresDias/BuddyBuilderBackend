@@ -2,11 +2,11 @@ const validateFieldExercicio = (req, res, next) => {
     const { body } = req;
 
     if (body.nomeExercicio === undefined) {
-        res.status(400).json({ message: "Campo nome exercicio é obrigatório" });
+        return res.status(400).json({ message: 'Campo "nome exercício" é obrigatório.' });
     }
 
     if (body.nomeExercicio === "") {
-        res.status(400).json({ message: "O campo nome exercicio não pode ser vazio" });
+        return res.status(400).json({ message: 'O "nome exercício" não pode ser vazio.' });
     }
 
     next();
