@@ -10,6 +10,18 @@ const getAllTreinos = async (_req, res) => {
     }
 }
 
+const getTreinoById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const treinoById = await treinoModel.getTreinoById(id);
+        if (!treinoById) return res.status(404).json({ message: "Treino não encontrado." });
+        return res.status(200).json(treinoById);
+    } catch (err) {
+        console.error("Erro ao carregar o treino específico no banco de dados.", err);
+        return res.status(500).json({ error: "Erro ao carregar o treino específico no banco de dados." });
+    }
+}
+
 const addTreino = async (req, res) => {
     try {
         const addTreino = await treinoModel.addTreino(req.body);
@@ -22,5 +34,6 @@ const addTreino = async (req, res) => {
 
 module.exports = {
     getAllTreinos,
+    getTreinoById,
     addTreino
 }

@@ -7,6 +7,8 @@ const treinoMiddleware = require("../middlewares/treinoMiddleware");
 
 routerTreino.get("/treino", treinoController.getAllTreinos);
 
+routerTreino.get("/treino/:id", treinoController.getTreinoById);
+
 routerTreino.post("/treino",
     treinoMiddleware.validateFieldTreino,
     treinoController.addTreino
