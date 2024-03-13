@@ -19,4 +19,6 @@ routerTreino.put("/treino/:id",
     treinoController.updateTreino
 );
 
+routerTreino.delete("/treino/:id", treinoController.deleteTreino);
+
 module.exports = routerTreino;

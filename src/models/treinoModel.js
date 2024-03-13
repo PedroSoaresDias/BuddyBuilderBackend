@@ -25,9 +25,16 @@ const updateTreino = async (id, treino) => {
     return updateTreino;
 }
 
+const deleteTreino = async (id) => {
+    const query = "DELETE FROM tb_treino WHERE id = $1";
+    const deleteTreino = await pool.query(query, [id]);
+    return deleteTreino;
+}
+
 module.exports = {
     getAllTreinos,
     getTreinoById,
     addTreino,
-    updateTreino
-}
+    updateTreino,
+    deleteTreino
+};

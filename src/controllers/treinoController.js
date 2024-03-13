@@ -46,9 +46,24 @@ const updateTreino = async (req, res) => {
     }
 }
 
+const deleteTreino = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const treinoById = await treinoModel.getTreinoById(id);
+        if (!treinoById) return res.status(404).json({ message: "Treino não encontrado." });
+
+        await treinoModel.deleteTreino(id);
+        return res.status(204).json();
+    } catch (err) {
+        console.error("Erro ao excluir o treino no banco de dados.", err);
+        return res.status(500).json({ error: "Erro ao excluir o treino no banco de dados." });
+    }
+}
+
 module.exports = {
     getAllTreinos,
     getTreinoById,
     addTreino,
-    updateTreino
-}
+    updateTreino,
+    deleteTreino
+};
