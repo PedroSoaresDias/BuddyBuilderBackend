@@ -32,8 +32,23 @@ const addTreino = async (req, res) => {
     }
 }
 
+const updateTreino = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const treinoById = await treinoModel.getTreinoById(id);
+        if (!treinoById) return res.status(404).json({ message: "Treino não encontrado." });
+
+        await treinoModel.updateTreino(id, req.body);
+        return res.status(204).json();
+    } catch (err) {
+        console.error("Erro ao atualizar o treino no banco de dados.", err);
+        return res.status(500).json({ error: "Erro ao atualizar o treino no banco de dados." });
+    }
+}
+
 module.exports = {
     getAllTreinos,
     getTreinoById,
-    addTreino
+    addTreino,
+    updateTreino
 }

@@ -14,4 +14,9 @@ routerTreino.post("/treino",
     treinoController.addTreino
 );
 
+routerTreino.put("/treino/:id",
+    treinoMiddleware.validateFieldTreino,
+    treinoController.updateTreino
+);
+
 module.exports = routerTreino;

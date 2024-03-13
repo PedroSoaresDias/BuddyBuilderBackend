@@ -17,8 +17,17 @@ const addTreino = async (treino) => {
     return addTreino;
 }
 
+const updateTreino = async (id, treino) => {
+    const { nomeTreino } = treino;
+    const query = "UPDATE tb_treino SET nome_treino = $1 WHERE id = $2";
+    const values = [nomeTreino, id];
+    const updateTreino = await pool.query(query, values);
+    return updateTreino;
+}
+
 module.exports = {
     getAllTreinos,
     getTreinoById,
-    addTreino
+    addTreino,
+    updateTreino
 }
