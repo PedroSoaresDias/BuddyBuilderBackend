@@ -1,73 +1,79 @@
-const userModel = require("../models/userModel")
-
-const getAllUsers = async (_req, res) => {
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.deleteUser = exports.updateUser = exports.addUser = exports.getUserById = exports.getAllUsers = void 0;
+const userModel_1 = require("../models/userModel");
+const getAllUsers = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = await userModel.getAllUsers();
+        const users = yield (0, userModel_1.getAllUsersModel)();
         return res.status(200).json(users);
-    } catch (err) {
+    }
+    catch (err) {
         console.error("Erro ao obter os dados do usuário no banco de dados: ", err);
         return res.status(500).json({ error: "Erro ao obter os dados do usuário no banco de dados." });
     }
-}
-
-const getUserById = async (req, res) => {
+});
+exports.getAllUsers = getAllUsers;
+const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const userById = await userModel.getUserById(id);
-
-        if (!userById) return res.status(404).json({ message: "Usuário não encontrado" });
-
+        const userById = yield (0, userModel_1.getUserByIdModel)(id);
+        if (!userById)
+            return res.status(404).json({ message: "Usuário não encontrado" });
         return res.status(200).json(userById);
-    } catch (err) {
+    }
+    catch (err) {
         console.error("Erro ao obter os dados do usuário especifico: ", err);
         return res.status(500).json({ error: "Erro ao obter os dados do usuário especifico." });
     }
-}
-
-const addUser = async (req, res) => {
+});
+exports.getUserById = getUserById;
+const addUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const addUser = await userModel.addUser(req.body);
+        const addUser = yield (0, userModel_1.addUserModel)(req.body);
         return res.status(201).json(addUser);
-    } catch (err) {
+    }
+    catch (err) {
         console.error("Erro ao adicionar o usuário no banco de dados: ", err);
         return res.status(500).json({ error: "Erro ao adicionar o usuário no banco de dados." });
     }
-}
-
-const updateUser = async (req, res) => {
+});
+exports.addUser = addUser;
+const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const userById = await userModel.getUserById(id);
-
-        if (!userById) return res.status(404).json({ message: "Usuário não encontrado" });
-
-        await userModel.updateUser(id, req.body);
-        return res.status(204).json()
-    } catch (err) {
-        console.error("Erro ao atualizar os dados do usuário no banco de dados: ", err);
-        return res.status(500).json({error: "Erro ao atualizar os dados do usuário no banco de dados."})
-    }
-}
-
-const deleteUser = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const userById = await userModel.getUserById(id);
-
-        if (!userById) return res.status(404).json({ message: "Usuário não encontrado" });
-
-        await userModel.deleteUser(id);
+        const userById = yield (0, userModel_1.getUserByIdModel)(id);
+        if (!userById)
+            return res.status(404).json({ message: "Usuário não encontrado" });
+        yield (0, userModel_1.updateUserModel)(id, req.body);
         return res.status(204).json();
-    } catch (err) {
-        console.error("Erro ao excluir o usuário do banco de dados: ", err);
-        return res.status(500).json({error: "Erro ao excluir o usuário do banco de dados."})
     }
-}
-
-module.exports = {
-    getAllUsers,
-    getUserById,
-    addUser,
-    updateUser,
-    deleteUser
-}
+    catch (err) {
+        console.error("Erro ao atualizar os dados do usuário no banco de dados: ", err);
+        return res.status(500).json({ error: "Erro ao atualizar os dados do usuário no banco de dados." });
+    }
+});
+exports.updateUser = updateUser;
+const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const userById = yield (0, userModel_1.getUserByIdModel)(id);
+        if (!userById)
+            return res.status(404).json({ message: "Usuário não encontrado" });
+        yield (0, userModel_1.deleteUserModel)(id);
+        return res.status(204).json();
+    }
+    catch (err) {
+        console.error("Erro ao excluir o usuário do banco de dados: ", err);
+        return res.status(500).json({ error: "Erro ao excluir o usuário do banco de dados." });
+    }
+});
+exports.deleteUser = deleteUser;

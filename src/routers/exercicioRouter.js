@@ -1,24 +1,15 @@
-const express = require("express");
-
-const routerExercicio = express.Router();
-
-const exercicioController = require("../controllers/exercicioController");
-const exercicioMiddleware = require("../middlewares/exercicioMiddleware");
-
-routerExercicio.get("/exercicio", exercicioController.getAllExercicios);
-
-routerExercicio.get("/exercicio/:id", exercicioController.getExercicioById);
-
-routerExercicio.post("/exercicio",
-    exercicioMiddleware.validateFieldExercicio,
-    exercicioController.addExercicio
-);
-
-routerExercicio.put("/exercicio/:id",
-    exercicioMiddleware.validateFieldExercicio,
-    exercicioController.updateExercicio
-);
-
-routerExercicio.delete("/exercicio/:id", exercicioController.deleteExercicio);
-
-module.exports = routerExercicio;
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.routerExercicio = void 0;
+const express_1 = __importDefault(require("express"));
+const exercicioController_1 = require("../controllers/exercicioController");
+const exercicioMiddleware_1 = require("../middlewares/exercicioMiddleware");
+exports.routerExercicio = express_1.default.Router();
+exports.routerExercicio.get("/exercicio", exercicioController_1.getAllExercicios);
+exports.routerExercicio.get("/exercicio/:id", exercicioController_1.getExercicioById);
+exports.routerExercicio.post("/exercicio", exercicioMiddleware_1.validateFieldExercicio, exercicioController_1.addExercicio);
+exports.routerExercicio.put("/exercicio/:id", exercicioMiddleware_1.validateFieldExercicio, exercicioController_1.updateExercicio);
+exports.routerExercicio.delete("/exercicio/:id", exercicioController_1.deleteExercicio);

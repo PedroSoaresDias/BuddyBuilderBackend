@@ -1,69 +1,79 @@
-const treinoModel = require("../models/treinoModel");
-
-const getAllTreinos = async (_req, res) => {
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.deleteTreino = exports.updateTreino = exports.addTreino = exports.getTreinoById = exports.getAllTreinos = void 0;
+const treinoModel_1 = require("../models/treinoModel");
+const getAllTreinos = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const treino = await treinoModel.getAllTreinos();
+        const treino = yield (0, treinoModel_1.getAllTreinosModel)();
         return res.status(200).json(treino);
-    } catch (err) {
+    }
+    catch (err) {
         console.error("Erro ao carregar os treinos no banco de dados.", err);
         return res.status(500).json({ error: "Erro ao carregar os treinos no banco de dados." });
     }
-}
-
-const getTreinoById = async (req, res) => {
+});
+exports.getAllTreinos = getAllTreinos;
+const getTreinoById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const treinoById = await treinoModel.getTreinoById(id);
-        if (!treinoById) return res.status(404).json({ message: "Treino não encontrado." });
+        const treinoById = yield (0, treinoModel_1.getTreinoByIdModel)(id);
+        if (!treinoById)
+            return res.status(404).json({ message: "Treino não encontrado." });
         return res.status(200).json(treinoById);
-    } catch (err) {
+    }
+    catch (err) {
         console.error("Erro ao carregar o treino específico no banco de dados.", err);
         return res.status(500).json({ error: "Erro ao carregar o treino específico no banco de dados." });
     }
-}
-
-const addTreino = async (req, res) => {
+});
+exports.getTreinoById = getTreinoById;
+const addTreino = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const addTreino = await treinoModel.addTreino(req.body);
+        const addTreino = yield (0, treinoModel_1.addTreinoModel)(req.body);
         return res.status(201).json(addTreino);
-    } catch (err) {
+    }
+    catch (err) {
         console.error("Erro ao adicionar um novo treino ao banco de dados.", err);
         return res.status(500).json({ error: "Erro ao adicionar um novo treino ao banco de dados." });
     }
-}
-
-const updateTreino = async (req, res) => {
+});
+exports.addTreino = addTreino;
+const updateTreino = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const treinoById = await treinoModel.getTreinoById(id);
-        if (!treinoById) return res.status(404).json({ message: "Treino não encontrado." });
-
-        await treinoModel.updateTreino(id, req.body);
+        const treinoById = yield (0, treinoModel_1.getTreinoByIdModel)(id);
+        if (!treinoById)
+            return res.status(404).json({ message: "Treino não encontrado." });
+        yield (0, treinoModel_1.updateTreinoModel)(id, req.body);
         return res.status(204).json();
-    } catch (err) {
+    }
+    catch (err) {
         console.error("Erro ao atualizar o treino no banco de dados.", err);
         return res.status(500).json({ error: "Erro ao atualizar o treino no banco de dados." });
     }
-}
-
-const deleteTreino = async (req, res) => {
+});
+exports.updateTreino = updateTreino;
+const deleteTreino = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const treinoById = await treinoModel.getTreinoById(id);
-        if (!treinoById) return res.status(404).json({ message: "Treino não encontrado." });
-
-        await treinoModel.deleteTreino(id);
+        const treinoById = yield (0, treinoModel_1.getTreinoByIdModel)(id);
+        if (!treinoById)
+            return res.status(404).json({ message: "Treino não encontrado." });
+        yield (0, treinoModel_1.deleteTreinoModel)(id);
         return res.status(204).json();
-    } catch (err) {
+    }
+    catch (err) {
         console.error("Erro ao excluir o treino no banco de dados.", err);
         return res.status(500).json({ error: "Erro ao excluir o treino no banco de dados." });
     }
-}
-
-module.exports = {
-    getAllTreinos,
-    getTreinoById,
-    addTreino,
-    updateTreino,
-    deleteTreino
-};
+});
+exports.deleteTreino = deleteTreino;
