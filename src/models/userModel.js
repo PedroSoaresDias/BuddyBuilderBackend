@@ -18,15 +18,18 @@ const getAllUsersModel = () => __awaiter(void 0, void 0, void 0, function* () {
             u.apelido,
             u.email,
             t.id AS treino_id,
-            t.nome_treino AS treino_nome
+            t.nome_treino AS treino_nome,
+            e.nome_exercicio AS exercicio_nome
         FROM
             tb_usuario u
         INNER JOIN
             tb_usuario_treino ut ON u.id = ut.id_usuario
         INNER JOIN
             tb_treino t ON ut.id_treino = t.id
+        INNER JOIN
+            tb_exercicio e ON t.id = e.id_treino
         ORDER BY
-            u.nome ASC
+            u.apelido ASC
     `;
     const user = yield connection_1.pool.query(query);
     return user.rows;
@@ -39,17 +42,20 @@ const getUserByIdModel = (id) => __awaiter(void 0, void 0, void 0, function* () 
             u.apelido,
             u.email,
             t.id AS treino_id,
-            t.nome_treino
+            t.nome_treino AS treino_nome,
+            e.nome_exercicio AS exercicio_nome
         FROM
             tb_usuario u
         INNER JOIN
             tb_usuario_treino ut ON u.id = ut.id_usuario
         INNER JOIN
             tb_treino t ON ut.id_treino = t.id
+        INNER JOIN
+            tb_exercicio e ON t.id = e.id_treino
         WHERE
             u.id = $1
         ORDER BY
-            u.nome ASC
+            u.apelido ASC
     `;
     const user = yield connection_1.pool.query(query, [id]);
     return user.rows[0];
