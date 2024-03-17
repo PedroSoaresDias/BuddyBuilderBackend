@@ -12,12 +12,40 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTreinoModel = exports.updateTreinoModel = exports.addTreinoModel = exports.getTreinoByIdModel = exports.getAllTreinosModel = void 0;
 const connection_1 = require("./connection");
 const getAllTreinosModel = () => __awaiter(void 0, void 0, void 0, function* () {
-    const treino = yield connection_1.pool.query("SELECT * FROM tb_treino");
+    const query = `
+        SELECT
+            t.id,
+            t.nome_treino,
+            e.id AS exercicio_id,
+            e.nome_exercicio AS exercicio_nome
+        FROM
+            tb_treino t
+        INNER JOIN
+            tb_exercicio e ON t.id = e.id_treino
+        ORDER BY
+            t.nome_treino ASC
+    `;
+    const treino = yield connection_1.pool.query(query);
     return treino.rows;
 });
 exports.getAllTreinosModel = getAllTreinosModel;
 const getTreinoByIdModel = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const treino = yield connection_1.pool.query("SELECT * FROM tb_treino WHERE id = $1", [id]);
+    const query = `
+        SELECT
+            t.id,
+            t.nome_treino,
+            e.id AS exercicio_id,
+            e.nome_exercicio AS exercicio_nome
+        FROM
+            tb_treino t
+        INNER JOIN
+            tb_exercicio e ON t.id = e.id_treino
+        WHERE
+            t.id = $1
+        ORDER BY
+            t.nome_treino ASC
+    `;
+    const treino = yield connection_1.pool.query(query, [id]);
     return treino.rows[0];
 });
 exports.getTreinoByIdModel = getTreinoByIdModel;

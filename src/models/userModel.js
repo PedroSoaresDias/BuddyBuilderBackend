@@ -12,12 +12,46 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUserModel = exports.updateUserModel = exports.addUserModel = exports.getUserByIdModel = exports.getAllUsersModel = void 0;
 const connection_1 = require("./connection");
 const getAllUsersModel = () => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield connection_1.pool.query("SELECT * FROM tb_usuario");
+    const query = `
+        SELECT
+            u.id,
+            u.apelido,
+            u.email,
+            t.id AS treino_id,
+            t.nome_treino AS treino_nome
+        FROM
+            tb_usuario u
+        INNER JOIN
+            tb_usuario_treino ut ON u.id = ut.id_usuario
+        INNER JOIN
+            tb_treino t ON ut.id_treino = t.id
+        ORDER BY
+            u.nome ASC
+    `;
+    const user = yield connection_1.pool.query(query);
     return user.rows;
 });
 exports.getAllUsersModel = getAllUsersModel;
 const getUserByIdModel = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield connection_1.pool.query("SELECT * FROM tb_usuario WHERE id = $1", [id]);
+    const query = `
+        SELECT
+            u.id,
+            u.apelido,
+            u.email,
+            t.id AS treino_id,
+            t.nome_treino
+        FROM
+            tb_usuario u
+        INNER JOIN
+            tb_usuario_treino ut ON u.id = ut.id_usuario
+        INNER JOIN
+            tb_treino t ON ut.id_treino = t.id
+        WHERE
+            u.id = $1
+        ORDER BY
+            u.nome ASC
+    `;
+    const user = yield connection_1.pool.query(query, [id]);
     return user.rows[0];
 });
 exports.getUserByIdModel = getUserByIdModel;

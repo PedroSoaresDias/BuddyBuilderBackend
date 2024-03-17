@@ -5,12 +5,40 @@ type Treino = {
 }
 
 export const getAllTreinosModel = async () => {
-    const treino = await pool.query("SELECT * FROM tb_treino");
+    const query = `
+        SELECT
+            t.id,
+            t.nome_treino,
+            e.id AS exercicio_id,
+            e.nome_exercicio AS exercicio_nome
+        FROM
+            tb_treino t
+        INNER JOIN
+            tb_exercicio e ON t.id = e.id_treino
+        ORDER BY
+            t.nome_treino ASC
+    `;
+    const treino = await pool.query(query);
     return treino.rows;
 }
 
 export const getTreinoByIdModel = async (id: number) => {
-    const treino = await pool.query("SELECT * FROM tb_treino WHERE id = $1", [id]);
+    const query = `
+        SELECT
+            t.id,
+            t.nome_treino,
+            e.id AS exercicio_id,
+            e.nome_exercicio AS exercicio_nome
+        FROM
+            tb_treino t
+        INNER JOIN
+            tb_exercicio e ON t.id = e.id_treino
+        WHERE
+            t.id = $1
+        ORDER BY
+            t.nome_treino ASC
+    `;
+    const treino = await pool.query(query, [id]);
     return treino.rows[0];
 }
 

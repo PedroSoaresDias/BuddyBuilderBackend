@@ -7,12 +7,46 @@ type User = {
 }
 
 export const getAllUsersModel = async () => {
-    const user = await pool.query("SELECT * FROM tb_usuario");
+    const query = `
+        SELECT
+            u.id,
+            u.apelido,
+            u.email,
+            t.id AS treino_id,
+            t.nome_treino AS treino_nome
+        FROM
+            tb_usuario u
+        INNER JOIN
+            tb_usuario_treino ut ON u.id = ut.id_usuario
+        INNER JOIN
+            tb_treino t ON ut.id_treino = t.id
+        ORDER BY
+            u.nome ASC
+    `;
+    const user = await pool.query(query);
     return user.rows;
 }
 
 export const getUserByIdModel = async (id: number) => {
-    const user = await pool.query("SELECT * FROM tb_usuario WHERE id = $1", [id]);
+    const query = `
+        SELECT
+            u.id,
+            u.apelido,
+            u.email,
+            t.id AS treino_id,
+            t.nome_treino
+        FROM
+            tb_usuario u
+        INNER JOIN
+            tb_usuario_treino ut ON u.id = ut.id_usuario
+        INNER JOIN
+            tb_treino t ON ut.id_treino = t.id
+        WHERE
+            u.id = $1
+        ORDER BY
+            u.nome ASC
+    `;
+    const user = await pool.query(query, [id]);
     return user.rows[0];
 }
 
@@ -26,7 +60,7 @@ export const addUserModel = async (user: User) => {
     return addUser;
 }
 
-export  const updateUserModel = async (id: number, user: User) => {
+export const updateUserModel = async (id: number, user: User) => {
     const { email, apelido, senha } = user;
 
     const query = "UPDATE tb_usuario SET email = $1, apelido = $2, senha = $3 WHERE id = $4";
