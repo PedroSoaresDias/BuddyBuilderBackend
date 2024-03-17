@@ -12,17 +12,41 @@ export const getAllUsersModel = async (): Promise<any[]> => {
             u.id,
             u.apelido,
             u.email,
-            t.id AS treino_id,
-            t.nome_treino AS treino_nome,
-            e.nome_exercicio AS exercicio_nome
+            json_build_object(
+                'id', u.id,
+                'apelido', u.apelido,
+                'email', u.email,
+                'treinos', (
+                    SELECT
+                        json_agg(
+                            json_build_object(
+                                'id', t.id,
+                                'nome_treino', t.nome_treino,
+                                'exercicios', (
+                                    SELECT
+                                        json_agg(
+                                            json_build_object(
+                                                'id', e.id,
+                                                'nome_exercicio', e.nome_exercicio
+                                            )
+                                        )
+                                    FROM
+                                        tb_exercicio e
+                                    WHERE
+                                        e.id_treino = t.id
+                                )
+                            )
+                        )
+                    FROM
+                        tb_treino t
+                    INNER JOIN
+                        tb_usuario_treino ut ON t.id = ut.id_treino
+                    WHERE
+                        ut.id_usuario = u.id
+                )
+            ) AS usuario_com_treinos
         FROM
             tb_usuario u
-        INNER JOIN
-            tb_usuario_treino ut ON u.id = ut.id_usuario
-        INNER JOIN
-            tb_treino t ON ut.id_treino = t.id
-        INNER JOIN
-            tb_exercicio e ON t.id = e.id_treino
         ORDER BY
             u.apelido ASC
     `;
@@ -30,23 +54,47 @@ export const getAllUsersModel = async (): Promise<any[]> => {
     return user.rows;
 }
 
-export const getUserByIdModel = async (id: number) => {
+export const getUserByIdModel = async (id: number): Promise<any> => {
     const query = `
         SELECT
             u.id,
             u.apelido,
             u.email,
-            t.id AS treino_id,
-            t.nome_treino AS treino_nome,
-            e.nome_exercicio AS exercicio_nome
+            json_build_object(
+                'id', u.id,
+                'apelido', u.apelido,
+                'email', u.email,
+                'treinos', (
+                    SELECT
+                        json_agg(
+                            json_build_object(
+                                'id', t.id,
+                                'nome_treino', t.nome_treino,
+                                'exercicios', (
+                                    SELECT
+                                        json_agg(
+                                            json_build_object(
+                                                'id', e.id,
+                                                'nome_exercicio', e.    nome_exercicio
+                                            )
+                                        )
+                                    FROM
+                                        tb_exercicio e
+                                    WHERE
+                                        e.id_treino = t.id
+                                )
+                            )
+                        )
+                    FROM
+                        tb_treino t
+                    INNER JOIN
+                        tb_usuario_treino ut ON t.id = ut.id_treino
+                    WHERE
+                        ut.id_usuario = u.id
+                )
+            ) AS usuario_com_treinos
         FROM
             tb_usuario u
-        INNER JOIN
-            tb_usuario_treino ut ON u.id = ut.id_usuario
-        INNER JOIN
-            tb_treino t ON ut.id_treino = t.id
-        INNER JOIN
-            tb_exercicio e ON t.id = e.id_treino
         WHERE
             u.id = $1
         ORDER BY

@@ -4,7 +4,8 @@ import { getAllUsersModel, getUserByIdModel, addUserModel, updateUserModel, dele
 export const getAllUsers = async (_req: Request, res: Response) => {
     try {
         const users = await getAllUsersModel();
-        return res.status(200).json(users);
+        const userWithTreinos = users.map((user) => user.usuario_com_treinos);
+        return res.status(200).json(userWithTreinos);
     } catch (err) {
         console.error("Erro ao obter os dados do usuário no banco de dados: ", err);
         return res.status(500).json({ error: "Erro ao obter os dados do usuário no banco de dados." });
@@ -18,7 +19,9 @@ export const getUserById = async (req: any, res: Response) => {
 
         if (!userById) return res.status(404).json({ message: "Usuário não encontrado" });
 
-        return res.status(200).json(userById);
+        const userWithTreinos = userById.usuario_com_treinos;
+
+        return res.status(200).json(userWithTreinos);
     } catch (err) {
         console.error("Erro ao obter os dados do usuário especifico: ", err);
         return res.status(500).json({ error: "Erro ao obter os dados do usuário especifico." });
