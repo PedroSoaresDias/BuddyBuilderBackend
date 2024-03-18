@@ -3,8 +3,9 @@ import { getAllTreinosModel, getTreinoByIdModel, addTreinoModel, updateTreinoMod
 
 export const getAllTreinos = async (_req: Request, res: Response) => {
     try {
-        const treino = await getAllTreinosModel();
-        return res.status(200).json(treino);
+        const treinos = await getAllTreinosModel();
+        const treinoComExercicios = treinos.map((treino) => treino.treino_com_exercicios);
+        return res.status(200).json(treinoComExercicios);
     } catch (err) {
         console.error("Erro ao carregar os treinos no banco de dados.", err);
         return res.status(500).json({ error: "Erro ao carregar os treinos no banco de dados." });

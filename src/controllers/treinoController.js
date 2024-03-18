@@ -13,8 +13,9 @@ exports.deleteTreino = exports.updateTreino = exports.addTreino = exports.getTre
 const treinoModel_1 = require("../models/treinoModel");
 const getAllTreinos = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const treino = yield (0, treinoModel_1.getAllTreinosModel)();
-        return res.status(200).json(treino);
+        const treinos = yield (0, treinoModel_1.getAllTreinosModel)();
+        const treinoComExercicios = treinos.map((treino) => treino.treino_com_exercicios);
+        return res.status(200).json(treinoComExercicios);
     }
     catch (err) {
         console.error("Erro ao carregar os treinos no banco de dados.", err);
