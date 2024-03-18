@@ -47,12 +47,25 @@ const getTreinoByIdModel = (id) => __awaiter(void 0, void 0, void 0, function* (
         SELECT
             t.id,
             t.nome_treino,
-            e.id AS exercicio_id,
-            e.nome_exercicio AS exercicio_nome
+            json_build_object(
+                'id', t.id,
+                'nome_treino', t.nome_treino,
+                'exercicios', (
+                    SELECT
+                        json_agg(
+                            json_build_object(
+                                'id', e.id,
+                                'nome_exercicio', e.nome_exercicio
+                            )
+                        )
+                    FROM
+                        tb_exercicio e
+                    WHERE
+                        e.id_treino = t.id
+                )
+            ) AS treino_com_exercicios
         FROM
             tb_treino t
-        INNER JOIN
-            tb_exercicio e ON t.id = e.id_treino
         WHERE
             t.id = $1
         ORDER BY

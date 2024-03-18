@@ -29,7 +29,8 @@ const getTreinoById = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const treinoById = yield (0, treinoModel_1.getTreinoByIdModel)(id);
         if (!treinoById)
             return res.status(404).json({ message: "Treino não encontrado." });
-        return res.status(200).json(treinoById);
+        const treinoByIdComExercicios = treinoById.treino_com_exercicios;
+        return res.status(200).json(treinoByIdComExercicios);
     }
     catch (err) {
         console.error("Erro ao carregar o treino específico no banco de dados.", err);

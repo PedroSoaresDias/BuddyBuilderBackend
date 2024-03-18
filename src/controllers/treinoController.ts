@@ -17,7 +17,8 @@ export const getTreinoById = async (req: any, res: Response) => {
         const { id } = req.params;
         const treinoById = await getTreinoByIdModel(id);
         if (!treinoById) return res.status(404).json({ message: "Treino não encontrado." });
-        return res.status(200).json(treinoById);
+        const treinoByIdComExercicios = treinoById.treino_com_exercicios;
+        return res.status(200).json(treinoByIdComExercicios);
     } catch (err) {
         console.error("Erro ao carregar o treino específico no banco de dados.", err);
         return res.status(500).json({ error: "Erro ao carregar o treino específico no banco de dados." });
