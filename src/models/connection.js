@@ -7,5 +7,4 @@ exports.pool = new pg_1.Pool({
     host: process.env.DB_HOST,
     database: process.env.DB_DATABASE,
     password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
 });
