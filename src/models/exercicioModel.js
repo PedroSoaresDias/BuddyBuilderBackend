@@ -22,9 +22,10 @@ const getExercicioByIdModel = (id) => __awaiter(void 0, void 0, void 0, function
 });
 exports.getExercicioByIdModel = getExercicioByIdModel;
 const addExercicioModel = (exercicio) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nomeExercicio } = exercicio;
-    const query = "INSERT INTO tb_exercicio(nome_exercicio) VALUES($1)";
-    const addExercicio = yield connection_1.pool.query(query, [nomeExercicio]);
+    const { nomeExercicio, idTreino } = exercicio;
+    const query = "INSERT INTO tb_exercicio(nome_exercicio, id_treino) VALUES($1, $2)";
+    const values = [nomeExercicio, idTreino];
+    const addExercicio = yield connection_1.pool.query(query, values);
     return addExercicio;
 });
 exports.addExercicioModel = addExercicioModel;

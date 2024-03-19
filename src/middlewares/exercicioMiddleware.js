@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateFieldExercicio = void 0;
+exports.validateFieldIdTreino = exports.validateFieldExercicio = void 0;
 const validateFieldExercicio = (req, res, next) => {
     const { body } = req;
     if (body.nomeExercicio === undefined) {
@@ -12,3 +12,14 @@ const validateFieldExercicio = (req, res, next) => {
     next();
 };
 exports.validateFieldExercicio = validateFieldExercicio;
+const validateFieldIdTreino = (req, res, next) => {
+    const { body } = req;
+    if (body.idTreino === undefined) {
+        return res.status(400).json({ message: 'Campo "Id Treino" é obrigatório.' });
+    }
+    if (body.idTreino === 0) {
+        return res.status(400).json({ message: 'O "Id Treino" não pode ser 0.' });
+    }
+    next();
+};
+exports.validateFieldIdTreino = validateFieldIdTreino;

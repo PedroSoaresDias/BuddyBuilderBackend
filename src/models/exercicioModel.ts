@@ -1,7 +1,8 @@
 import { pool } from "./connection";
 
 type Exercicio = {
-    nomeExercicio: string
+    nomeExercicio: string;
+    idTreino: number;
 }
 
 export const getAllExerciciosModel = async () => {
@@ -15,10 +16,10 @@ export const getExercicioByIdModel = async (id: number) => {
 }
 
 export const addExercicioModel = async (exercicio: Exercicio) => {
-    const { nomeExercicio } = exercicio;
-
-    const query = "INSERT INTO tb_exercicio(nome_exercicio) VALUES($1)";
-    const addExercicio = await pool.query(query, [nomeExercicio]);
+    const { nomeExercicio, idTreino } = exercicio;
+    const query = "INSERT INTO tb_exercicio(nome_exercicio, id_treino) VALUES($1, $2)";
+    const values = [nomeExercicio, idTreino]
+    const addExercicio = await pool.query(query, values);
     return addExercicio;
 }
 

@@ -10,6 +10,6 @@ const exercicioMiddleware_1 = require("../middlewares/exercicioMiddleware");
 exports.routerExercicio = express_1.default.Router();
 exports.routerExercicio.get("/exercicio", exercicioController_1.getAllExercicios);
 exports.routerExercicio.get("/exercicio/:id", exercicioController_1.getExercicioById);
-exports.routerExercicio.post("/exercicio", exercicioMiddleware_1.validateFieldExercicio, exercicioController_1.addExercicio);
-exports.routerExercicio.put("/exercicio/:id", exercicioMiddleware_1.validateFieldExercicio, exercicioController_1.updateExercicio);
+exports.routerExercicio.post("/exercicio", exercicioMiddleware_1.validateFieldExercicio, exercicioMiddleware_1.validateFieldIdTreino, exercicioController_1.addExercicio);
+exports.routerExercicio.put("/exercicio/:id", exercicioMiddleware_1.validateFieldExercicio, exercicioMiddleware_1.validateFieldIdTreino, exercicioController_1.updateExercicio);
 exports.routerExercicio.delete("/exercicio/:id", exercicioController_1.deleteExercicio);
