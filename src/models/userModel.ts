@@ -114,6 +114,13 @@ export const addUserModel = async (user: User) => {
     return addUser;
 }
 
+export const addUserTreinoModel = async (idUser: number, idTreino: number) => {
+    const query = "INSERT INTO tb_usuario_treino(id_usuario, id_treino) VALUES($1, $2)";
+    const values = [idUser, idTreino];
+    const result = await pool.query(query, values);
+    return result;
+}
+
 export const updateUserModel = async (id: number, user: User) => {
     const { email, apelido, senha } = user;
 

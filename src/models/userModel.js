@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserModel = exports.updateUserModel = exports.addUserModel = exports.getUserByIdModel = exports.getAllUsersModel = void 0;
+exports.deleteUserModel = exports.updateUserModel = exports.addUserTreinoModel = exports.addUserModel = exports.getUserByIdModel = exports.getAllUsersModel = void 0;
 const connection_1 = require("./connection");
 const getAllUsersModel = () => __awaiter(void 0, void 0, void 0, function* () {
     const query = `
@@ -117,6 +117,13 @@ const addUserModel = (user) => __awaiter(void 0, void 0, void 0, function* () {
     return addUser;
 });
 exports.addUserModel = addUserModel;
+const addUserTreinoModel = (idUser, idTreino) => __awaiter(void 0, void 0, void 0, function* () {
+    const query = "INSERT INTO tb_usuario_treino(id_usuario, id_treino) VALUES($1, $2)";
+    const values = [idUser, idTreino];
+    const result = yield connection_1.pool.query(query, values);
+    return result;
+});
+exports.addUserTreinoModel = addUserTreinoModel;
 const updateUserModel = (id, user) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, apelido, senha } = user;
     const query = "UPDATE tb_usuario SET email = $1, apelido = $2, senha = $3 WHERE id = $4";

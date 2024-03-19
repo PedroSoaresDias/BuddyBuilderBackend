@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAllUsersModel, getUserByIdModel, addUserModel, updateUserModel, deleteUserModel } from "../models/userModel";
+import { getAllUsersModel, getUserByIdModel, addUserModel, addUserTreinoModel, updateUserModel, deleteUserModel } from "../models/userModel";
 
 export const getAllUsers = async (_req: Request, res: Response) => {
     try {
@@ -35,6 +35,17 @@ export const addUser = async (req: Request, res: Response) => {
     } catch (err) {
         console.error("Erro ao adicionar o usuário no banco de dados: ", err);
         return res.status(500).json({ error: "Erro ao adicionar o usuário no banco de dados." });
+    }
+}
+
+export const addUserTreino = async (req: Request, res: Response) => {
+    try {
+        const { idUser, idTreino } = req.params;
+        const result = await addUserTreinoModel(parseInt(idUser), parseInt(idTreino));
+        return res.status(201).json(result)
+    } catch (err) {
+        console.error("Erro ao conectar o usuário com treino no banco de dados: ", err);
+        return res.status(500).json({ error: "Erro ao conectar o usuário com treino no banco de dados." });
     }
 }
 

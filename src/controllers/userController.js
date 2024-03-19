@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUser = exports.addUser = exports.getUserById = exports.getAllUsers = void 0;
+exports.deleteUser = exports.updateUser = exports.addUserTreino = exports.addUser = exports.getUserById = exports.getAllUsers = void 0;
 const userModel_1 = require("../models/userModel");
 const getAllUsers = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -49,6 +49,18 @@ const addUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.addUser = addUser;
+const addUserTreino = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { idUser, idTreino } = req.params;
+        const result = yield (0, userModel_1.addUserTreinoModel)(parseInt(idUser), parseInt(idTreino));
+        return res.status(201).json(result);
+    }
+    catch (err) {
+        console.error("Erro ao conectar o usuário com treino no banco de dados: ", err);
+        return res.status(500).json({ error: "Erro ao conectar o usuário com treino no banco de dados." });
+    }
+});
+exports.addUserTreino = addUserTreino;
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;

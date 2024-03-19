@@ -11,5 +11,6 @@ exports.routerUser = express_1.default.Router();
 exports.routerUser.get("/users", userController_1.getAllUsers);
 exports.routerUser.get("/users/:id", userController_1.getUserById);
 exports.routerUser.post("/users", userMiddleware_1.validateFieldEmail, userMiddleware_1.validateFieldNickname, userMiddleware_1.validateFieldPassword, userController_1.addUser);
+exports.routerUser.post("/users/:idUser/treinos/:idTreino", userMiddleware_1.validateFieldIdUser, userMiddleware_1.validateFieldIdTreino, userController_1.addUserTreino);
 exports.routerUser.put("/users/:id", userMiddleware_1.validateFieldEmail, userMiddleware_1.validateFieldNickname, userMiddleware_1.validateFieldPassword, userController_1.updateUser);
 exports.routerUser.delete("/users/:id", userController_1.deleteUser);

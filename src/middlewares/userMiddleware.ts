@@ -41,3 +41,31 @@ export const validateFieldPassword = (req: Request, res: Response, next: NextFun
 
     next();
 }
+
+export const validateFieldIdUser = (req: Request, res: Response, next: NextFunction) => {
+    const { body } = req;
+
+    if (body.idUser === undefined) {
+        return res.status(400).json({ message: 'O campo "id do usuário" é obrigatório.' });
+    }
+
+    if (body.idUser === 0) {
+        return res.status(400).json({ message: 'O Id do usuário não pode ser 0.' });
+    }
+
+    next();
+}
+
+export const validateFieldIdTreino = (req: Request, res: Response, next: NextFunction) => {
+    const { body } = req;
+
+    if (body.idTreino === undefined) {
+        return res.status(400).json({ message: 'O campo "id do treino" é obrigatório.' });
+    }
+
+    if (body.idTreino === 0) {
+        return res.status(400).json({ message: 'O Id do treino não pode ser 0.' });
+    }
+
+    next();
+}
