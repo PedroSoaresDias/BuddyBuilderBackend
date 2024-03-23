@@ -12,10 +12,20 @@ export const getAllUsersModel = async (): Promise<any[]> => {
             u.id,
             u.apelido,
             u.email,
+            u.created_at,
+            u.updated_at,
+            u.altura,
+            u.peso,
+            u.imc,
             json_build_object(
                 'id', u.id,
                 'apelido', u.apelido,
                 'email', u.email,
+                'created_at', u.created_at,
+                'updated_at', u.updated_at,
+                'altura', u.altura,
+                'peso', u.peso,
+                'imc', u.imc,
                 'treinos', (
                     SELECT
                         json_agg(
@@ -60,10 +70,20 @@ export const getUserByIdModel = async (id: number): Promise<any> => {
             u.id,
             u.apelido,
             u.email,
+            u.created_at,
+            u.updated_at,
+            u.altura,
+            u.peso,
+            u.imc,
             json_build_object(
                 'id', u.id,
                 'apelido', u.apelido,
                 'email', u.email,
+                'created_at', u.created_at,
+                'updated_at', u.updated_at,
+                'altura', u.altura,
+                'peso', u.peso,
+                'imc', u.imc,
                 'treinos', (
                     SELECT
                         json_agg(

@@ -17,10 +17,20 @@ const getAllUsersModel = () => __awaiter(void 0, void 0, void 0, function* () {
             u.id,
             u.apelido,
             u.email,
+            u.created_at,
+            u.updated_at,
+            u.altura,
+            u.peso,
+            u.imc,
             json_build_object(
                 'id', u.id,
                 'apelido', u.apelido,
                 'email', u.email,
+                'created_at', u.created_at,
+                'updated_at', u.updated_at,
+                'altura', u.altura,
+                'peso', u.peso,
+                'imc', u.imc,
                 'treinos', (
                     SELECT
                         json_agg(
@@ -65,10 +75,20 @@ const getUserByIdModel = (id) => __awaiter(void 0, void 0, void 0, function* () 
             u.id,
             u.apelido,
             u.email,
+            u.created_at,
+            u.updated_at,
+            u.altura,
+            u.peso,
+            u.imc,
             json_build_object(
                 'id', u.id,
                 'apelido', u.apelido,
                 'email', u.email,
+                'created_at', u.created_at,
+                'updated_at', u.updated_at,
+                'altura', u.altura,
+                'peso', u.peso,
+                'imc', u.imc,
                 'treinos', (
                     SELECT
                         json_agg(
