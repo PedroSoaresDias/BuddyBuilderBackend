@@ -12,10 +12,10 @@ export const getAllUsers = async (_req: Request, res: Response) => {
     }
 }
 
-export const getUserById = async (req: any, res: Response) => {
+export const getUserById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const userById = await getUserByIdModel(id);
+        const userById = await getUserByIdModel(parseInt(id));
 
         if (!userById) return res.status(404).json({ message: "Usuário não encontrado" });
 
@@ -49,14 +49,14 @@ export const addUserTreino = async (req: Request, res: Response) => {
     }
 }
 
-export const updateUser = async (req: any, res: Response) => {
+export const updateUser = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const userById = await getUserByIdModel(id);
+        const userById = await getUserByIdModel(parseInt(id));
 
         if (!userById) return res.status(404).json({ message: "Usuário não encontrado" });
 
-        await updateUserModel(id, req.body);
+        await updateUserModel(parseInt(id), req.body);
         return res.status(204).json()
     } catch (err) {
         console.error("Erro ao atualizar os dados do usuário no banco de dados: ", err);
@@ -64,14 +64,14 @@ export const updateUser = async (req: any, res: Response) => {
     }
 }
 
-export const deleteUser = async (req: any, res: Response) => {
+export const deleteUser = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const userById = await getUserByIdModel(id);
+        const userById = await getUserByIdModel(parseInt(id));
 
         if (!userById) return res.status(404).json({ message: "Usuário não encontrado" });
 
-        await deleteUserModel(id);
+        await deleteUserModel(parseInt(id));
         return res.status(204).json();
     } catch (err) {
         console.error("Erro ao excluir o usuário do banco de dados: ", err);

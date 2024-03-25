@@ -12,10 +12,10 @@ export const getAllTreinos = async (_req: Request, res: Response) => {
     }
 }
 
-export const getTreinoById = async (req: any, res: Response) => {
+export const getTreinoById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const treinoById = await getTreinoByIdModel(id);
+        const treinoById = await getTreinoByIdModel(parseInt(id));
         if (!treinoById) return res.status(404).json({ message: "Treino não encontrado." });
         const treinoByIdComExercicios = treinoById.treino_com_exercicios;
         return res.status(200).json(treinoByIdComExercicios);
@@ -35,13 +35,13 @@ export const addTreino = async (req: Request, res: Response) => {
     }
 }
 
-export const updateTreino = async (req: any, res: Response) => {
+export const updateTreino = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const treinoById = await getTreinoByIdModel(id);
+        const treinoById = await getTreinoByIdModel(parseInt(id));
         if (!treinoById) return res.status(404).json({ message: "Treino não encontrado." });
 
-        await updateTreinoModel(id, req.body);
+        await updateTreinoModel(parseInt(id), req.body);
         return res.status(204).json();
     } catch (err) {
         console.error("Erro ao atualizar o treino no banco de dados.", err);
@@ -49,13 +49,13 @@ export const updateTreino = async (req: any, res: Response) => {
     }
 }
 
-export const deleteTreino = async (req: any, res: Response) => {
+export const deleteTreino = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const treinoById = await getTreinoByIdModel(id);
+        const treinoById = await getTreinoByIdModel(parseInt(id));
         if (!treinoById) return res.status(404).json({ message: "Treino não encontrado." });
 
-        await deleteTreinoModel(id);
+        await deleteTreinoModel(parseInt(id));
         return res.status(204).json();
     } catch (err) {
         console.error("Erro ao excluir o treino no banco de dados.", err);

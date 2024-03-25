@@ -26,7 +26,7 @@ exports.getAllTreinos = getAllTreinos;
 const getTreinoById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const treinoById = yield (0, treinoModel_1.getTreinoByIdModel)(id);
+        const treinoById = yield (0, treinoModel_1.getTreinoByIdModel)(parseInt(id));
         if (!treinoById)
             return res.status(404).json({ message: "Treino não encontrado." });
         const treinoByIdComExercicios = treinoById.treino_com_exercicios;
@@ -52,10 +52,10 @@ exports.addTreino = addTreino;
 const updateTreino = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const treinoById = yield (0, treinoModel_1.getTreinoByIdModel)(id);
+        const treinoById = yield (0, treinoModel_1.getTreinoByIdModel)(parseInt(id));
         if (!treinoById)
             return res.status(404).json({ message: "Treino não encontrado." });
-        yield (0, treinoModel_1.updateTreinoModel)(id, req.body);
+        yield (0, treinoModel_1.updateTreinoModel)(parseInt(id), req.body);
         return res.status(204).json();
     }
     catch (err) {
@@ -67,10 +67,10 @@ exports.updateTreino = updateTreino;
 const deleteTreino = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const treinoById = yield (0, treinoModel_1.getTreinoByIdModel)(id);
+        const treinoById = yield (0, treinoModel_1.getTreinoByIdModel)(parseInt(id));
         if (!treinoById)
             return res.status(404).json({ message: "Treino não encontrado." });
-        yield (0, treinoModel_1.deleteTreinoModel)(id);
+        yield (0, treinoModel_1.deleteTreinoModel)(parseInt(id));
         return res.status(204).json();
     }
     catch (err) {

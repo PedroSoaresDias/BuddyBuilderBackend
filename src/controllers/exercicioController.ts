@@ -18,10 +18,10 @@ export const getAllExercicios = async (_req: Request, res: Response) => {
     }
 }
 
-export const getExercicioById = async (req: any, res: Response) => {
+export const getExercicioById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const exercicioById = await getExercicioByIdModel(id);
+        const exercicioById = await getExercicioByIdModel(parseInt(id));
 
         if (!exercicioById) return res.status(404).json({ message: "Exercício não encontrado" });
 
@@ -42,14 +42,14 @@ export const addExercicio = async (req: Request, res: Response) => {
     }
 }
 
-export const updateExercicio = async (req: any, res: Response) => {
+export const updateExercicio = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const exercicioById = await getExercicioByIdModel(id);
+        const exercicioById = await getExercicioByIdModel(parseInt(id));
 
         if (!exercicioById) return res.status(404).json({ message: "Exercício não encontrado" });
 
-        await updateExercicioModel(id, req.body);
+        await updateExercicioModel(parseInt(id), req.body);
         return res.status(204).json();
     } catch (err) {
         console.error("Erro ao atualizar o exercicio no banco de dados.", err);
@@ -57,14 +57,14 @@ export const updateExercicio = async (req: any, res: Response) => {
     }
 }
 
-export const deleteExercicio = async (req: any, res: Response) => {
+export const deleteExercicio = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const exercicioById = await getExercicioByIdModel(id);
+        const exercicioById = await getExercicioByIdModel(parseInt(id));
 
         if (!exercicioById) return res.status(404).json({ message: "Exercício não encontrado" });
 
-        await deleteExercicioModel(id);
+        await deleteExercicioModel(parseInt(id));
         return res.status(204).json();
     } catch (err) {
         console.error("Erro ao excluir o exercicio no banco de dados.", err);

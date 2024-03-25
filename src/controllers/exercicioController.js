@@ -25,7 +25,7 @@ exports.getAllExercicios = getAllExercicios;
 const getExercicioById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const exercicioById = yield (0, exercicioModel_1.getExercicioByIdModel)(id);
+        const exercicioById = yield (0, exercicioModel_1.getExercicioByIdModel)(parseInt(id));
         if (!exercicioById)
             return res.status(404).json({ message: "Exercício não encontrado" });
         return res.status(200).json(exercicioById);
@@ -50,10 +50,10 @@ exports.addExercicio = addExercicio;
 const updateExercicio = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const exercicioById = yield (0, exercicioModel_1.getExercicioByIdModel)(id);
+        const exercicioById = yield (0, exercicioModel_1.getExercicioByIdModel)(parseInt(id));
         if (!exercicioById)
             return res.status(404).json({ message: "Exercício não encontrado" });
-        yield (0, exercicioModel_1.updateExercicioModel)(id, req.body);
+        yield (0, exercicioModel_1.updateExercicioModel)(parseInt(id), req.body);
         return res.status(204).json();
     }
     catch (err) {
@@ -65,10 +65,10 @@ exports.updateExercicio = updateExercicio;
 const deleteExercicio = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const exercicioById = yield (0, exercicioModel_1.getExercicioByIdModel)(id);
+        const exercicioById = yield (0, exercicioModel_1.getExercicioByIdModel)(parseInt(id));
         if (!exercicioById)
             return res.status(404).json({ message: "Exercício não encontrado" });
-        yield (0, exercicioModel_1.deleteExercicioModel)(id);
+        yield (0, exercicioModel_1.deleteExercicioModel)(parseInt(id));
         return res.status(204).json();
     }
     catch (err) {

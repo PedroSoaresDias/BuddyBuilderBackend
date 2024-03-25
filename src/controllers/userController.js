@@ -26,7 +26,7 @@ exports.getAllUsers = getAllUsers;
 const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const userById = yield (0, userModel_1.getUserByIdModel)(id);
+        const userById = yield (0, userModel_1.getUserByIdModel)(parseInt(id));
         if (!userById)
             return res.status(404).json({ message: "Usuário não encontrado" });
         const userWithTreinos = userById.usuario_com_treinos;
@@ -64,10 +64,10 @@ exports.addUserTreino = addUserTreino;
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const userById = yield (0, userModel_1.getUserByIdModel)(id);
+        const userById = yield (0, userModel_1.getUserByIdModel)(parseInt(id));
         if (!userById)
             return res.status(404).json({ message: "Usuário não encontrado" });
-        yield (0, userModel_1.updateUserModel)(id, req.body);
+        yield (0, userModel_1.updateUserModel)(parseInt(id), req.body);
         return res.status(204).json();
     }
     catch (err) {
@@ -79,10 +79,10 @@ exports.updateUser = updateUser;
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const userById = yield (0, userModel_1.getUserByIdModel)(id);
+        const userById = yield (0, userModel_1.getUserByIdModel)(parseInt(id));
         if (!userById)
             return res.status(404).json({ message: "Usuário não encontrado" });
-        yield (0, userModel_1.deleteUserModel)(id);
+        yield (0, userModel_1.deleteUserModel)(parseInt(id));
         return res.status(204).json();
     }
     catch (err) {
