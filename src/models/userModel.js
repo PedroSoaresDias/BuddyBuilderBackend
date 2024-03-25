@@ -130,9 +130,13 @@ const getUserByIdModel = (id) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.getUserByIdModel = getUserByIdModel;
 const addUserModel = (user) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, apelido, senha } = user;
-    const query = "INSERT INTO tb_usuario(email, apelido, senha) VALUES($1, $2, $3)";
-    const values = [email, apelido, senha];
+    const { email, apelido, senha, altura, peso, imc } = user;
+    const query = `
+        INSERT INTO tb_usuario
+        (email, apelido, senha, created_at, updated_at, altura, peso, imc)
+        VALUES ($1, $2, $3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $4, $5, $6)
+    `;
+    const values = [email, apelido, senha, altura, peso, imc];
     const addUser = yield connection_1.pool.query(query, values);
     return addUser;
 });
@@ -145,9 +149,13 @@ const addUserTreinoModel = (idUser, idTreino) => __awaiter(void 0, void 0, void 
 });
 exports.addUserTreinoModel = addUserTreinoModel;
 const updateUserModel = (id, user) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, apelido, senha } = user;
-    const query = "UPDATE tb_usuario SET email = $1, apelido = $2, senha = $3 WHERE id = $4";
-    const values = [email, apelido, senha, id];
+    const { email, apelido, senha, altura, peso, imc } = user;
+    const query = `
+        UPDATE tb_usuario SET
+        email = $1, apelido = $2, senha = $3, updated_at = CURRENT_TIMESTAMP, altura = $4, peso = $5, imc = $6
+        WHERE id = $7
+    `;
+    const values = [email, apelido, senha, altura, peso, imc, id];
     const updateUser = yield connection_1.pool.query(query, values);
     return updateUser;
 });

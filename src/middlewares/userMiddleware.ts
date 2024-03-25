@@ -69,3 +69,45 @@ export const validateFieldIdTreino = (req: Request, res: Response, next: NextFun
 
     next();
 }
+
+export const validateFieldAltura = (req: Request, res: Response, next: NextFunction) => {
+    const { body } = req;
+
+    if (body.altura === undefined) {
+        return res.status(400).json({ message: 'O campo "altura" é obrigatório.' });
+    }
+
+    if (body.altura === 0) {
+        return res.status(400).json({ message: 'A altura não pode ser 0.' });
+    }
+
+    next();
+}
+
+export const validateFieldPeso = (req: Request, res: Response, next: NextFunction) => {
+    const { body } = req;
+
+    if (body.peso === undefined) {
+        return res.status(400).json({ message: 'O campo "peso" é obrigatório.' });
+    }
+
+    if (body.peso === 0) {
+        return res.status(400).json({ message: 'O peso não pode ser 0.' });
+    }
+
+    next();
+}
+
+export const validateFieldIMC = (req: Request, res: Response, next: NextFunction) => {
+    const { body } = req;
+
+    if (body.imc === undefined) {
+        return res.status(400).json({ message: 'O campo "imc" é obrigatório.' });
+    }
+
+    if (body.imc === 0) {
+        return res.status(400).json({ message: 'O imc não pode ser 0.' });
+    }
+
+    next();
+}

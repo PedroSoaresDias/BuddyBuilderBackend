@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateFieldIdTreino = exports.validateFieldIdUser = exports.validateFieldPassword = exports.validateFieldNickname = exports.validateFieldEmail = void 0;
+exports.validateFieldIMC = exports.validateFieldPeso = exports.validateFieldAltura = exports.validateFieldIdTreino = exports.validateFieldIdUser = exports.validateFieldPassword = exports.validateFieldNickname = exports.validateFieldEmail = void 0;
 const validateFieldEmail = (req, res, next) => {
     const { body } = req;
     if (body.email === undefined) {
@@ -56,3 +56,36 @@ const validateFieldIdTreino = (req, res, next) => {
     next();
 };
 exports.validateFieldIdTreino = validateFieldIdTreino;
+const validateFieldAltura = (req, res, next) => {
+    const { body } = req;
+    if (body.altura === undefined) {
+        return res.status(400).json({ message: 'O campo "altura" é obrigatório.' });
+    }
+    if (body.altura === 0) {
+        return res.status(400).json({ message: 'A altura não pode ser 0.' });
+    }
+    next();
+};
+exports.validateFieldAltura = validateFieldAltura;
+const validateFieldPeso = (req, res, next) => {
+    const { body } = req;
+    if (body.peso === undefined) {
+        return res.status(400).json({ message: 'O campo "peso" é obrigatório.' });
+    }
+    if (body.peso === 0) {
+        return res.status(400).json({ message: 'O peso não pode ser 0.' });
+    }
+    next();
+};
+exports.validateFieldPeso = validateFieldPeso;
+const validateFieldIMC = (req, res, next) => {
+    const { body } = req;
+    if (body.imc === undefined) {
+        return res.status(400).json({ message: 'O campo "imc" é obrigatório.' });
+    }
+    if (body.imc === 0) {
+        return res.status(400).json({ message: 'O imc não pode ser 0.' });
+    }
+    next();
+};
+exports.validateFieldIMC = validateFieldIMC;
