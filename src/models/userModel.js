@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserModel = exports.updateUserModel = exports.addUserTreinoModel = exports.addUserModel = exports.getUserByIdModel = exports.getAllUsersModel = void 0;
+exports.deleteUserModel = exports.updateUserModel = exports.addUserTreinoModel = exports.findUserByEmailModel = exports.addUserModel = exports.getUserByIdModel = exports.getAllUsersModel = void 0;
 const connection_1 = require("./connection");
 const getAllUsersModel = () => __awaiter(void 0, void 0, void 0, function* () {
     const query = `
@@ -138,9 +138,15 @@ const addUserModel = (user) => __awaiter(void 0, void 0, void 0, function* () {
     `;
     const values = [email, apelido, senha, altura, peso, imc];
     const addUser = yield connection_1.pool.query(query, values);
-    return addUser;
+    return addUser.rows[0];
 });
 exports.addUserModel = addUserModel;
+const findUserByEmailModel = (user) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = user;
+    const findUser = yield connection_1.pool.query("SELECT * FROM tb_usuario WHERE email = $1", [email]);
+    return findUser.rows[0];
+});
+exports.findUserByEmailModel = findUserByEmailModel;
 const addUserTreinoModel = (idUser, idTreino) => __awaiter(void 0, void 0, void 0, function* () {
     const query = "INSERT INTO tb_usuario_treino(id_usuario, id_treino) VALUES($1, $2)";
     const values = [idUser, idTreino];

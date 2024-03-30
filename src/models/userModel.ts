@@ -139,7 +139,13 @@ export const addUserModel = async (user: User) => {
     const values = [email, apelido, senha, altura, peso, imc];
 
     const addUser = await pool.query(query, values);
-    return addUser;
+    return addUser.rows[0];
+}
+
+export const findUserByEmailModel = async (user: User) => {
+    const { email } = user;
+    const findUser = await pool.query("SELECT * FROM tb_usuario WHERE email = $1", [email]);
+    return findUser.rows[0];
 }
 
 export const addUserTreinoModel = async (idUser: number, idTreino: number) => {

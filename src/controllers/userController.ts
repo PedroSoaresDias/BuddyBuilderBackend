@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAllUsersModel, getUserByIdModel, addUserModel, addUserTreinoModel, updateUserModel, deleteUserModel } from "../models/userModel";
+import { getAllUsersModel, getUserByIdModel, addUserModel, addUserTreinoModel, updateUserModel, deleteUserModel, findUserByEmailModel } from "../models/userModel";
 
 export const getAllUsers = async (_req: Request, res: Response) => {
     try {
@@ -35,6 +35,20 @@ export const addUser = async (req: Request, res: Response) => {
     } catch (err) {
         console.error("Erro ao adicionar o usuário no banco de dados: ", err);
         return res.status(500).json({ error: "Erro ao adicionar o usuário no banco de dados." });
+    }
+}
+
+export const findUserByEmail = async (req: Request, res: Response) => {
+    try {
+        const user = await findUserByEmailModel(req.body);
+        if (!user.email || !user.senha) {
+            return res.status(401).json({error: "Login inválido."})
+        }
+
+        res.status(200).send("Login efetuado com sucesso!");
+    } catch (err) {
+        console.error("Erro ao encontrar o usuário no banco de dados: ", err);
+        return res.status(500).json({ error: "Erro ao encontrar o usuário no banco de dados." });
     }
 }
 

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUser = exports.addUserTreino = exports.addUser = exports.getUserById = exports.getAllUsers = void 0;
+exports.deleteUser = exports.updateUser = exports.addUserTreino = exports.findUserByEmail = exports.addUser = exports.getUserById = exports.getAllUsers = void 0;
 const userModel_1 = require("../models/userModel");
 const getAllUsers = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -49,6 +49,20 @@ const addUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.addUser = addUser;
+const findUserByEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield (0, userModel_1.findUserByEmailModel)(req.body);
+        if (!user.email || !user.senha) {
+            return res.status(401).json({ error: "Login inválido." });
+        }
+        res.status(200).send("Login efetuado com sucesso!");
+    }
+    catch (err) {
+        console.error("Erro ao encontrar o usuário no banco de dados: ", err);
+        return res.status(500).json({ error: "Erro ao encontrar o usuário no banco de dados." });
+    }
+});
+exports.findUserByEmail = findUserByEmail;
 const addUserTreino = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { idUser, idTreino } = req.params;

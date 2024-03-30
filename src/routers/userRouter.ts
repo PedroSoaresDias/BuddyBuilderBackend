@@ -6,7 +6,8 @@ import {
     addUser,
     updateUser,
     deleteUser,
-    addUserTreino
+    addUserTreino,
+    findUserByEmail
 } from "../controllers/userController";
 
 import {
@@ -26,14 +27,17 @@ routerUser.get("/users", getAllUsers);
 
 routerUser.get("/users/:id", getUserById);
 
-routerUser.post("/users",
+routerUser.post("/users/register",
     validateFieldEmail,
     validateFieldNickname,
     validateFieldPassword,
-    validateFieldAltura,
-    validateFieldPeso,
-    validateFieldIMC,
     addUser
+);
+
+routerUser.post("/users/login",
+    validateFieldEmail,
+    validateFieldPassword,
+    findUserByEmail
 );
 
 routerUser.post("/users/:idUser/treinos/:idTreino",
