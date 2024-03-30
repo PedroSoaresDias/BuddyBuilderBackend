@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { getAllUsersModel, getUserByIdModel, addUserModel, addUserTreinoModel, updateUserModel, deleteUserModel, findUserByEmailModel } from "../models/userModel";
+import bcrypt from "bcrypt";
 
 export const getAllUsers = async (_req: Request, res: Response) => {
     try {
@@ -39,10 +40,18 @@ export const addUser = async (req: Request, res: Response) => {
 }
 
 export const findUserByEmail = async (req: Request, res: Response) => {
+    const { senha } = req.body;
+    
     try {
         const user = await findUserByEmailModel(req.body);
-        if (!user.email || !user.senha) {
-            return res.status(401).json({error: "Login inválido."})
+        if (!user) {
+            return res.status(401).json({ error: "E-mail inválido." });
+        }
+
+        const senhaEhValida = await bcrypt.compareSync(senha, user.senha);
+
+        if (!senhaEhValida) {
+            return res.status(401).json({ error: "Senha inválida." });
         }
 
         res.status(200).send("Login efetuado com sucesso!");

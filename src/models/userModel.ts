@@ -1,4 +1,5 @@
 import { pool } from "./connection";
+import bcrypt from "bcrypt";
 
 type User = {
     email: string;
@@ -130,13 +131,15 @@ export const getUserByIdModel = async (id: number): Promise<any> => {
 export const addUserModel = async (user: User) => {
     const { email, apelido, senha, altura, peso, imc } = user;
 
+    const senhaHashed = await bcrypt.hash(senha, 10);
+
     const query = `
         INSERT INTO tb_usuario
         (email, apelido, senha, created_at, updated_at, altura, peso, imc)
         VALUES ($1, $2, $3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $4, $5, $6)
     `;
 
-    const values = [email, apelido, senha, altura, peso, imc];
+    const values = [email, apelido, senhaHashed, altura, peso, imc];
 
     const addUser = await pool.query(query, values);
     return addUser.rows[0];
@@ -158,13 +161,15 @@ export const addUserTreinoModel = async (idUser: number, idTreino: number) => {
 export const updateUserModel = async (id: number, user: User) => {
     const { email, apelido, senha, altura, peso, imc } = user;
 
+    const senhaHashed = await bcrypt.hash(senha, 10);
+
     const query = `
         UPDATE tb_usuario SET
         email = $1, apelido = $2, senha = $3, updated_at = CURRENT_TIMESTAMP, altura = $4, peso = $5, imc = $6
         WHERE id = $7
     `;
 
-    const values = [email, apelido, senha, altura, peso, imc, id];
+    const values = [email, apelido, senhaHashed, altura, peso, imc, id];
 
     const updateUser = await pool.query(query, values);
     return updateUser;

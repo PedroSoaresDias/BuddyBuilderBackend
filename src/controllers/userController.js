@@ -8,9 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.updateUser = exports.addUserTreino = exports.findUserByEmail = exports.addUser = exports.getUserById = exports.getAllUsers = void 0;
 const userModel_1 = require("../models/userModel");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const getAllUsers = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield (0, userModel_1.getAllUsersModel)();
@@ -50,10 +54,15 @@ const addUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.addUser = addUser;
 const findUserByEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { senha } = req.body;
     try {
         const user = yield (0, userModel_1.findUserByEmailModel)(req.body);
-        if (!user.email || !user.senha) {
-            return res.status(401).json({ error: "Login inválido." });
+        if (!user) {
+            return res.status(401).json({ error: "E-mail inválido." });
+        }
+        const senhaEhValida = yield bcrypt_1.default.compareSync(senha, user.senha);
+        if (!senhaEhValida) {
+            return res.status(401).json({ error: "Senha inválida." });
         }
         res.status(200).send("Login efetuado com sucesso!");
     }
