@@ -11,21 +11,20 @@ import {
 } from "../controllers/userController";
 
 import {
-    validateFieldAltura,
     validateFieldEmail,
     validateFieldIdTreino,
     validateFieldIdUser,
-    validateFieldIMC,
     validateFieldNickname,
     validateFieldPassword,
-    validateFieldPeso
 } from "../middlewares/userMiddleware";
+
+import { verifyToken } from "../middlewares/authMiddleware";
 
 export const routerUser = express.Router();
 
-routerUser.get("/users", getAllUsers);
+routerUser.get("/users", verifyToken, getAllUsers);
 
-routerUser.get("/users/:id", getUserById);
+routerUser.get("/users/:id", verifyToken, getUserById);
 
 routerUser.post("/users/register",
     validateFieldEmail,
@@ -41,19 +40,18 @@ routerUser.post("/users/login",
 );
 
 routerUser.post("/users/:idUser/treinos/:idTreino",
+    verifyToken,
     validateFieldIdUser,
     validateFieldIdTreino,
     addUserTreino
 );
 
 routerUser.put("/users/:id",
+    verifyToken,
     validateFieldEmail,
     validateFieldNickname,
     validateFieldPassword,
-    validateFieldAltura,
-    validateFieldPeso,
-    validateFieldIMC,
     updateUser
 );
 
-routerUser.delete("/users/:id", deleteUser);
+routerUser.delete("/users/:id", verifyToken, deleteUser);
