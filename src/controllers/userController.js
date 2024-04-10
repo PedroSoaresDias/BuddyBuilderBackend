@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.updateUser = exports.addUserTreino = exports.findUserByEmail = exports.addUser = exports.getUserById = exports.getAllUsers = void 0;
 const userModel_1 = require("../models/userModel");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const env = process.env;
 const getAllUsers = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield (0, userModel_1.getAllUsersModel)();
@@ -64,7 +66,11 @@ const findUserByEmail = (req, res) => __awaiter(void 0, void 0, void 0, function
         if (!senhaEhValida) {
             return res.status(401).json({ error: "Senha inválida." });
         }
-        res.status(200).send("Login efetuado com sucesso!");
+        const token = jsonwebtoken_1.default.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRATION });
+        res.status(200).send({
+            message: "Login efetuado com sucesso.",
+            token: token
+        });
     }
     catch (err) {
         console.error("Erro ao encontrar o usuário no banco de dados: ", err);

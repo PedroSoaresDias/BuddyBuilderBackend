@@ -1,6 +1,14 @@
 import { Request, Response } from "express";
 import { getAllUsersModel, getUserByIdModel, addUserModel, addUserTreinoModel, updateUserModel, deleteUserModel, findUserByEmailModel } from "../models/userModel";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+type Env = {
+    JWT_SECRET: string;
+    JWT_EXPIRATION: string;
+}
+
+const env: Env = process.env as Env;
 
 export const getAllUsers = async (_req: Request, res: Response) => {
     try {
@@ -54,7 +62,12 @@ export const findUserByEmail = async (req: Request, res: Response) => {
             return res.status(401).json({ error: "Senha inválida." });
         }
 
-        res.status(200).send("Login efetuado com sucesso!");
+        const token = jwt.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRATION });
+
+        res.status(200).send({
+            message: "Login efetuado com sucesso.",
+            token: token
+        });
     } catch (err) {
         console.error("Erro ao encontrar o usuário no banco de dados: ", err);
         return res.status(500).json({ error: "Erro ao encontrar o usuário no banco de dados." });
