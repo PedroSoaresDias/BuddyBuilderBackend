@@ -8,11 +8,12 @@ import {
     deleteExercicio
 } from "../controllers/exercicioController";
 import { validateFieldExercicio, validateFieldIdTreino } from "../middlewares/exercicioMiddleware";
+import { verifyToken } from "../middlewares/authMiddleware";
 
 export const routerExercicio = express.Router();
 
 routerExercicio.get("/exercicio", getAllExercicios);
 routerExercicio.get("/exercicio/:id", getExercicioById);
-routerExercicio.post("/exercicio", validateFieldExercicio, validateFieldIdTreino, addExercicio);
-routerExercicio.put("/exercicio/:id", validateFieldExercicio, validateFieldIdTreino, updateExercicio);
-routerExercicio.delete("/exercicio/:id", deleteExercicio);
+routerExercicio.post("/exercicio", verifyToken, validateFieldExercicio, validateFieldIdTreino, addExercicio);
+routerExercicio.put("/exercicio/:id", verifyToken, validateFieldExercicio, validateFieldIdTreino, updateExercicio);
+routerExercicio.delete("/exercicio/:id", verifyToken, deleteExercicio);

@@ -79,7 +79,7 @@ const addTreinoModel = (treino) => __awaiter(void 0, void 0, void 0, function* (
     const { nomeTreino } = treino;
     const query = "INSERT INTO tb_treino(nome_treino) VALUES($1)";
     const addTreino = yield connection_1.pool.query(query, [nomeTreino]);
-    return addTreino;
+    return addTreino.rows[0];
 });
 exports.addTreinoModel = addTreinoModel;
 const updateTreinoModel = (id, treino) => __awaiter(void 0, void 0, void 0, function* () {

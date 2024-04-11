@@ -26,7 +26,7 @@ const addExercicioModel = (exercicio) => __awaiter(void 0, void 0, void 0, funct
     const query = "INSERT INTO tb_exercicio(nome_exercicio, id_treino) VALUES($1, $2)";
     const values = [nomeExercicio, idTreino];
     const addExercicio = yield connection_1.pool.query(query, values);
-    return addExercicio;
+    return addExercicio.rows[0];
 });
 exports.addExercicioModel = addExercicioModel;
 const updateExercicioModel = (id, exercicio) => __awaiter(void 0, void 0, void 0, function* () {

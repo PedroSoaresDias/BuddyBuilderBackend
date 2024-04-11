@@ -20,7 +20,7 @@ export const addExercicioModel = async (exercicio: Exercicio) => {
     const query = "INSERT INTO tb_exercicio(nome_exercicio, id_treino) VALUES($1, $2)";
     const values = [nomeExercicio, idTreino]
     const addExercicio = await pool.query(query, values);
-    return addExercicio;
+    return addExercicio.rows[0];
 }
 
 export const updateExercicioModel = async (id: number, exercicio: Exercicio) => {

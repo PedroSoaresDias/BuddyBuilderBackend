@@ -156,7 +156,7 @@ const addUserTreinoModel = (idUser, idTreino) => __awaiter(void 0, void 0, void 
     const query = "INSERT INTO tb_usuario_treino(id_usuario, id_treino) VALUES($1, $2)";
     const values = [idUser, idTreino];
     const result = yield connection_1.pool.query(query, values);
-    return result;
+    return result.rows[0];
 });
 exports.addUserTreinoModel = addUserTreinoModel;
 const updateUserModel = (id, user) => __awaiter(void 0, void 0, void 0, function* () {
