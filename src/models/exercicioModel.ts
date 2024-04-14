@@ -5,8 +5,9 @@ type Exercicio = {
     idTreino: number;
 }
 
-export const getAllExerciciosModel = async () => {
-    const exercicio = await pool.query("SELECT * FROM tb_exercicio");
+export const getAllExerciciosModel = async (page: number = 1, limit: number = 5) => {
+    const offset: number = (page - 1) * limit;
+    const exercicio = await pool.query("SELECT * FROM tb_exercicio LIMIT $1 OFFSET $2", [limit, offset]);
     return exercicio.rows; 
 }
 

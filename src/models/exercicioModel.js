@@ -11,8 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteExercicioModel = exports.updateExercicioModel = exports.addExercicioModel = exports.getExercicioByIdModel = exports.getAllExerciciosModel = void 0;
 const connection_1 = require("./connection");
-const getAllExerciciosModel = () => __awaiter(void 0, void 0, void 0, function* () {
-    const exercicio = yield connection_1.pool.query("SELECT * FROM tb_exercicio");
+const getAllExerciciosModel = (...args_1) => __awaiter(void 0, [...args_1], void 0, function* (page = 1, limit = 5) {
+    const offset = (page - 1) * limit;
+    const exercicio = yield connection_1.pool.query("SELECT * FROM tb_exercicio LIMIT $1 OFFSET $2", [limit, offset]);
     return exercicio.rows;
 });
 exports.getAllExerciciosModel = getAllExerciciosModel;

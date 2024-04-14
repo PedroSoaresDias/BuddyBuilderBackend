@@ -4,7 +4,9 @@ type Treino = {
     nomeTreino: string;
 }
 
-export const getAllTreinosModel = async (): Promise<any[]> => {
+export const getAllTreinosModel = async (page: number = 1, limit: number = 5): Promise<any[]> => {
+    const offset: number = (page - 1) * limit;
+
     const query = `
         SELECT
             t.id,
@@ -29,9 +31,13 @@ export const getAllTreinosModel = async (): Promise<any[]> => {
         FROM
             tb_treino t
         ORDER BY
-            t.nome_treino ASC
+            t.id ASC
+        LIMIT $1 OFFSET $2
     `;
-    const treino = await pool.query(query);
+
+    const values = [limit, offset];
+
+    const treino = await pool.query(query, values);
     return treino.rows;
 }
 
@@ -62,7 +68,7 @@ export const getTreinoByIdModel = async (id: number): Promise<any> => {
         WHERE
             t.id = $1
         ORDER BY
-            t.nome_treino ASC
+            t.id ASC
     `;
     const treino = await pool.query(query, [id]);
     return treino.rows[0];

@@ -11,9 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTreino = exports.updateTreino = exports.addTreino = exports.getTreinoById = exports.getAllTreinos = void 0;
 const treinoModel_1 = require("../models/treinoModel");
-const getAllTreinos = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllTreinos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 5;
     try {
-        const treinos = yield (0, treinoModel_1.getAllTreinosModel)();
+        const treinos = yield (0, treinoModel_1.getAllTreinosModel)(page, limit);
         const treinoComExercicios = treinos.map((treino) => treino.treino_com_exercicios);
         return res.status(200).json(treinoComExercicios);
     }

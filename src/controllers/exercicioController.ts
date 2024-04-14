@@ -8,9 +8,12 @@ import {
     deleteExercicioModel
 } from "../models/exercicioModel";
 
-export const getAllExercicios = async (_req: Request, res: Response) => {
+export const getAllExercicios = async (req: Request, res: Response) => {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 5;
+
     try {
-        const exercicio = await getAllExerciciosModel();
+        const exercicio = await getAllExerciciosModel(page, limit);
         return res.status(200).json(exercicio);
     } catch (err) {
         console.error("Erro ao carregar os exercícios no banco de dados.", err);

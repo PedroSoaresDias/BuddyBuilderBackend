@@ -11,7 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTreinoModel = exports.updateTreinoModel = exports.addTreinoModel = exports.getTreinoByIdModel = exports.getAllTreinosModel = void 0;
 const connection_1 = require("./connection");
-const getAllTreinosModel = () => __awaiter(void 0, void 0, void 0, function* () {
+const getAllTreinosModel = (...args_1) => __awaiter(void 0, [...args_1], void 0, function* (page = 1, limit = 5) {
+    const offset = (page - 1) * limit;
     const query = `
         SELECT
             t.id,
@@ -36,9 +37,11 @@ const getAllTreinosModel = () => __awaiter(void 0, void 0, void 0, function* () 
         FROM
             tb_treino t
         ORDER BY
-            t.nome_treino ASC
+            t.id ASC
+        LIMIT $1 OFFSET $2
     `;
-    const treino = yield connection_1.pool.query(query);
+    const values = [limit, offset];
+    const treino = yield connection_1.pool.query(query, values);
     return treino.rows;
 });
 exports.getAllTreinosModel = getAllTreinosModel;
@@ -69,7 +72,7 @@ const getTreinoByIdModel = (id) => __awaiter(void 0, void 0, void 0, function* (
         WHERE
             t.id = $1
         ORDER BY
-            t.nome_treino ASC
+            t.id ASC
     `;
     const treino = yield connection_1.pool.query(query, [id]);
     return treino.rows[0];

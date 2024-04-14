@@ -11,9 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteExercicio = exports.updateExercicio = exports.addExercicio = exports.getExercicioById = exports.getAllExercicios = void 0;
 const exercicioModel_1 = require("../models/exercicioModel");
-const getAllExercicios = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllExercicios = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 5;
     try {
-        const exercicio = yield (0, exercicioModel_1.getAllExerciciosModel)();
+        const exercicio = yield (0, exercicioModel_1.getAllExerciciosModel)(page, limit);
         return res.status(200).json(exercicio);
     }
     catch (err) {
