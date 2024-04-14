@@ -10,7 +10,9 @@ type User = {
     imc: number;
 }
 
-export const getAllUsersModel = async (): Promise<any[]> => {
+export const getAllUsersModel = async (page: number = 1, limit: number = 5): Promise<any[]> => {
+    const offset: number = (page - 1) * limit;
+
     const query = `
         SELECT
             u.id,
@@ -62,9 +64,12 @@ export const getAllUsersModel = async (): Promise<any[]> => {
         FROM
             tb_usuario u
         ORDER BY
-            u.apelido ASC
+            u.id ASC
+        LIMIT $1 OFFSET $2
     `;
-    const user = await pool.query(query);
+
+    const values = [limit, offset];
+    const user = await pool.query(query, values);
     return user.rows;
 }
 
@@ -122,7 +127,7 @@ export const getUserByIdModel = async (id: number): Promise<any> => {
         WHERE
             u.id = $1
         ORDER BY
-            u.apelido ASC
+            u.id ASC
     `;
     const user = await pool.query(query, [id]);
     return user.rows[0];

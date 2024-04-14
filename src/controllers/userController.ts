@@ -10,9 +10,12 @@ type Env = {
 
 const env: Env = process.env as Env;
 
-export const getAllUsers = async (_req: Request, res: Response) => {
+export const getAllUsers = async (req: Request, res: Response) => {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 5;
+
     try {
-        const users = await getAllUsersModel();
+        const users = await getAllUsersModel(page, limit);
         const userWithTreinos = users.map((user) => user.usuario_com_treinos);
         return res.status(200).json(userWithTreinos);
     } catch (err) {

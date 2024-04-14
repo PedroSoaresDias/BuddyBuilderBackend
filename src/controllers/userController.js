@@ -17,9 +17,11 @@ const userModel_1 = require("../models/userModel");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const env = process.env;
-const getAllUsers = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 5;
     try {
-        const users = yield (0, userModel_1.getAllUsersModel)();
+        const users = yield (0, userModel_1.getAllUsersModel)(page, limit);
         const userWithTreinos = users.map((user) => user.usuario_com_treinos);
         return res.status(200).json(userWithTreinos);
     }

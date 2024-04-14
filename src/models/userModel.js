@@ -15,7 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUserModel = exports.updateUserModel = exports.addUserTreinoModel = exports.findUserByEmailModel = exports.addUserModel = exports.getUserByIdModel = exports.getAllUsersModel = void 0;
 const connection_1 = require("./connection");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const getAllUsersModel = () => __awaiter(void 0, void 0, void 0, function* () {
+const getAllUsersModel = (...args_1) => __awaiter(void 0, [...args_1], void 0, function* (page = 1, limit = 5) {
+    const offset = (page - 1) * limit;
     const query = `
         SELECT
             u.id,
@@ -67,9 +68,11 @@ const getAllUsersModel = () => __awaiter(void 0, void 0, void 0, function* () {
         FROM
             tb_usuario u
         ORDER BY
-            u.apelido ASC
+            u.id ASC
+        LIMIT $1 OFFSET $2
     `;
-    const user = yield connection_1.pool.query(query);
+    const values = [limit, offset];
+    const user = yield connection_1.pool.query(query, values);
     return user.rows;
 });
 exports.getAllUsersModel = getAllUsersModel;
@@ -127,7 +130,7 @@ const getUserByIdModel = (id) => __awaiter(void 0, void 0, void 0, function* () 
         WHERE
             u.id = $1
         ORDER BY
-            u.apelido ASC
+            u.id ASC
     `;
     const user = yield connection_1.pool.query(query, [id]);
     return user.rows[0];
