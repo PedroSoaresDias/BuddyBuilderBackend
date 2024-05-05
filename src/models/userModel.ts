@@ -15,14 +15,6 @@ export const getAllUsersModel = async (page: number = 1, limit: number = 5): Pro
 
     const query = `
         SELECT
-            u.id,
-            u.apelido,
-            u.email,
-            u.created_at,
-            u.updated_at,
-            u.altura,
-            u.peso,
-            u.imc,
             json_build_object(
                 'id', u.id,
                 'apelido', u.apelido,
@@ -76,14 +68,6 @@ export const getAllUsersModel = async (page: number = 1, limit: number = 5): Pro
 export const getUserByIdModel = async (id: number): Promise<any> => {
     const query = `
         SELECT
-            u.id,
-            u.apelido,
-            u.email,
-            u.created_at,
-            u.updated_at,
-            u.altura,
-            u.peso,
-            u.imc,
             json_build_object(
                 'id', u.id,
                 'apelido', u.apelido,

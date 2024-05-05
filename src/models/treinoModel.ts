@@ -9,8 +9,6 @@ export const getAllTreinosModel = async (page: number = 1, limit: number = 5): P
 
     const query = `
         SELECT
-            t.id,
-            t.nome_treino,
             json_build_object(
                 'id', t.id,
                 'nome_treino', t.nome_treino,
@@ -44,8 +42,6 @@ export const getAllTreinosModel = async (page: number = 1, limit: number = 5): P
 export const getTreinoByIdModel = async (id: number): Promise<any> => {
     const query = `
         SELECT
-            t.id,
-            t.nome_treino,
             json_build_object(
                 'id', t.id,
                 'nome_treino', t.nome_treino,

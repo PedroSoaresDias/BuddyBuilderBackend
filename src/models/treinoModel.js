@@ -15,8 +15,6 @@ const getAllTreinosModel = (...args_1) => __awaiter(void 0, [...args_1], void 0,
     const offset = (page - 1) * limit;
     const query = `
         SELECT
-            t.id,
-            t.nome_treino,
             json_build_object(
                 'id', t.id,
                 'nome_treino', t.nome_treino,
@@ -48,8 +46,6 @@ exports.getAllTreinosModel = getAllTreinosModel;
 const getTreinoByIdModel = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const query = `
         SELECT
-            t.id,
-            t.nome_treino,
             json_build_object(
                 'id', t.id,
                 'nome_treino', t.nome_treino,

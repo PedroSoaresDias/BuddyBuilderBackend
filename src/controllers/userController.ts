@@ -10,7 +10,7 @@ type Env = {
 
 const env: Env = process.env as Env;
 
-export const getAllUsers = async (req: Request, res: Response) => {
+export const getAllUsers = async (req: any, res: Response) => {
     const page = req.query.page || 1;
     const limit = req.query.limit || 5;
 

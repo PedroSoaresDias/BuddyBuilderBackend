@@ -8,7 +8,7 @@ import {
     deleteExercicioModel
 } from "../models/exercicioModel";
 
-export const getAllExercicios = async (req: Request, res: Response) => {
+export const getAllExercicios = async (req: any, res: Response) => {
     const page = req.query.page || 1;
     const limit = req.query.limit || 5;
 

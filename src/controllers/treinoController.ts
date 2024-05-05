@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { getAllTreinosModel, getTreinoByIdModel, addTreinoModel, updateTreinoModel, deleteTreinoModel } from "../models/treinoModel";
 
-export const getAllTreinos = async (req: Request, res: Response) => {
+export const getAllTreinos = async (req: any, res: Response) => {
     const page = req.query.page || 1;
     const limit = req.query.limit || 5;
 
