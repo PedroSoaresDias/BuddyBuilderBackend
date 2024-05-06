@@ -4,32 +4,38 @@ type Treino = {
     nomeTreino: string;
 }
 
+const treinoFields: string = `
+    json_build_object(
+        'id', t.id,
+        'nome_treino', t.nome_treino,
+        'exercicios', (
+            SELECT
+                json_agg(
+                    json_build_object(
+                        'id', e.id,
+                        'nome_exercicio', e.nome_exercicio
+                    )
+                )
+            FROM
+                tb_exercicio e
+            WHERE
+                e.id_treino = t.id
+        )
+    ) AS treino_com_exercicios
+`;
+
+const baseQuery: string = `
+    SELECT
+        ${treinoFields}
+    FROM tb_treino t
+`;
+
 export const getAllTreinosModel = async (page: number = 1, limit: number = 5): Promise<any[]> => {
     const offset: number = (page - 1) * limit;
 
     const query = `
-        SELECT
-            json_build_object(
-                'id', t.id,
-                'nome_treino', t.nome_treino,
-                'exercicios', (
-                    SELECT
-                        json_agg(
-                            json_build_object(
-                                'id', e.id,
-                                'nome_exercicio', e.nome_exercicio
-                            )
-                        )
-                    FROM
-                        tb_exercicio e
-                    WHERE
-                        e.id_treino = t.id
-                )
-            ) AS treino_com_exercicios
-        FROM
-            tb_treino t
-        ORDER BY
-            t.id ASC
+        ${baseQuery}
+        ORDER BY t.id ASC
         LIMIT $1 OFFSET $2
     `;
 
@@ -41,30 +47,9 @@ export const getAllTreinosModel = async (page: number = 1, limit: number = 5): P
 
 export const getTreinoByIdModel = async (id: number): Promise<any> => {
     const query = `
-        SELECT
-            json_build_object(
-                'id', t.id,
-                'nome_treino', t.nome_treino,
-                'exercicios', (
-                    SELECT
-                        json_agg(
-                            json_build_object(
-                                'id', e.id,
-                                'nome_exercicio', e.nome_exercicio
-                            )
-                        )
-                    FROM
-                        tb_exercicio e
-                    WHERE
-                        e.id_treino = t.id
-                )
-            ) AS treino_com_exercicios
-        FROM
-            tb_treino t
-        WHERE
-            t.id = $1
-        ORDER BY
-            t.id ASC
+        ${baseQuery}
+        WHERE t.id = $1
+        ORDER BY t.id ASC
     `;
     const treino = await pool.query(query, [id]);
     return treino.rows[0];
@@ -82,11 +67,11 @@ export const updateTreinoModel = async (id: number, treino: Treino) => {
     const query = "UPDATE tb_treino SET nome_treino = $1 WHERE id = $2";
     const values = [nomeTreino, id];
     const updateTreino = await pool.query(query, values);
-    return updateTreino;
+    return updateTreino.rows[0];
 }
 
 export const deleteTreinoModel = async (id: number) => {
     const query = "DELETE FROM tb_treino WHERE id = $1";
     const deleteTreino = await pool.query(query, [id]);
-    return deleteTreino;
+    return deleteTreino.rows[0];
 }

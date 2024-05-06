@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { getAllTreinosModel, getTreinoByIdModel, addTreinoModel, updateTreinoModel, deleteTreinoModel } from "../models/treinoModel";
 
-export const getAllTreinos = async (req: any, res: Response) => {
+export const getAllTreinos = async (req: Request, res: Response) => {
     const page = req.query.page || 1;
     const limit = req.query.limit || 5;
 
     try {
-        const treinos = await getAllTreinosModel(page, limit);
+        const treinos = await getAllTreinosModel(page as number, limit as number);
         const treinoComExercicios = treinos.map((treino) => treino.treino_com_exercicios);
         return res.status(200).json(treinoComExercicios);
     } catch (err) {

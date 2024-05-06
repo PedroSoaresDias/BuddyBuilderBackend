@@ -51,13 +51,17 @@ const userFields: string = `
     ) AS usuario_com_treinos
 `;
 
+const baseQuery: string = `
+    SELECT
+        ${userFields}
+    FROM tb_usuario u
+`;
+
 export const getAllUsersModel = async (page: number = 1, limit: number = 5): Promise<any[]> => {
     const offset: number = (page - 1) * limit;
 
     const query = `
-        SELECT
-            ${userFields}
-        FROM tb_usuario u
+        ${baseQuery}
         ORDER BY u.id ASC
         LIMIT $1 OFFSET $2
     `;
@@ -69,9 +73,7 @@ export const getAllUsersModel = async (page: number = 1, limit: number = 5): Pro
 
 export const getUserByIdModel = async (id: number): Promise<any> => {
     const query = `
-        SELECT
-            ${userFields}
-        FROM tb_usuario u
+        ${baseQuery}
         WHERE u.id = $1
         ORDER BY u.id ASC
     `;

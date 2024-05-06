@@ -55,12 +55,15 @@ const userFields = `
         )
     ) AS usuario_com_treinos
 `;
+const baseQuery = `
+    SELECT
+        ${userFields}
+    FROM tb_usuario u
+`;
 const getAllUsersModel = (...args_1) => __awaiter(void 0, [...args_1], void 0, function* (page = 1, limit = 5) {
     const offset = (page - 1) * limit;
     const query = `
-        SELECT
-            ${userFields}
-        FROM tb_usuario u
+        ${baseQuery}
         ORDER BY u.id ASC
         LIMIT $1 OFFSET $2
     `;
@@ -71,9 +74,7 @@ const getAllUsersModel = (...args_1) => __awaiter(void 0, [...args_1], void 0, f
 exports.getAllUsersModel = getAllUsersModel;
 const getUserByIdModel = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const query = `
-        SELECT
-            ${userFields}
-        FROM tb_usuario u
+        ${baseQuery}
         WHERE u.id = $1
         ORDER BY u.id ASC
     `;

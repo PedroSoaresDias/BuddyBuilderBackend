@@ -11,31 +11,35 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTreinoModel = exports.updateTreinoModel = exports.addTreinoModel = exports.getTreinoByIdModel = exports.getAllTreinosModel = void 0;
 const connection_1 = require("./connection");
+const treinoFields = `
+    json_build_object(
+        'id', t.id,
+        'nome_treino', t.nome_treino,
+        'exercicios', (
+            SELECT
+                json_agg(
+                    json_build_object(
+                        'id', e.id,
+                        'nome_exercicio', e.nome_exercicio
+                    )
+                )
+            FROM
+                tb_exercicio e
+            WHERE
+                e.id_treino = t.id
+        )
+    ) AS treino_com_exercicios
+`;
+const baseQuery = `
+    SELECT
+        ${treinoFields}
+    FROM tb_treino t
+`;
 const getAllTreinosModel = (...args_1) => __awaiter(void 0, [...args_1], void 0, function* (page = 1, limit = 5) {
     const offset = (page - 1) * limit;
     const query = `
-        SELECT
-            json_build_object(
-                'id', t.id,
-                'nome_treino', t.nome_treino,
-                'exercicios', (
-                    SELECT
-                        json_agg(
-                            json_build_object(
-                                'id', e.id,
-                                'nome_exercicio', e.nome_exercicio
-                            )
-                        )
-                    FROM
-                        tb_exercicio e
-                    WHERE
-                        e.id_treino = t.id
-                )
-            ) AS treino_com_exercicios
-        FROM
-            tb_treino t
-        ORDER BY
-            t.id ASC
+        ${baseQuery}
+        ORDER BY t.id ASC
         LIMIT $1 OFFSET $2
     `;
     const values = [limit, offset];
@@ -45,30 +49,9 @@ const getAllTreinosModel = (...args_1) => __awaiter(void 0, [...args_1], void 0,
 exports.getAllTreinosModel = getAllTreinosModel;
 const getTreinoByIdModel = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const query = `
-        SELECT
-            json_build_object(
-                'id', t.id,
-                'nome_treino', t.nome_treino,
-                'exercicios', (
-                    SELECT
-                        json_agg(
-                            json_build_object(
-                                'id', e.id,
-                                'nome_exercicio', e.nome_exercicio
-                            )
-                        )
-                    FROM
-                        tb_exercicio e
-                    WHERE
-                        e.id_treino = t.id
-                )
-            ) AS treino_com_exercicios
-        FROM
-            tb_treino t
-        WHERE
-            t.id = $1
-        ORDER BY
-            t.id ASC
+        ${baseQuery}
+        WHERE t.id = $1
+        ORDER BY t.id ASC
     `;
     const treino = yield connection_1.pool.query(query, [id]);
     return treino.rows[0];
@@ -86,12 +69,12 @@ const updateTreinoModel = (id, treino) => __awaiter(void 0, void 0, void 0, func
     const query = "UPDATE tb_treino SET nome_treino = $1 WHERE id = $2";
     const values = [nomeTreino, id];
     const updateTreino = yield connection_1.pool.query(query, values);
-    return updateTreino;
+    return updateTreino.rows[0];
 });
 exports.updateTreinoModel = updateTreinoModel;
 const deleteTreinoModel = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const query = "DELETE FROM tb_treino WHERE id = $1";
     const deleteTreino = yield connection_1.pool.query(query, [id]);
-    return deleteTreino;
+    return deleteTreino.rows[0];
 });
 exports.deleteTreinoModel = deleteTreinoModel;
