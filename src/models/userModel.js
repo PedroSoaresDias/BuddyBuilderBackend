@@ -15,52 +15,53 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUserTreinoModel = exports.deleteUserModel = exports.updateUserModel = exports.addUserTreinoModel = exports.findUserByEmailModel = exports.addUserModel = exports.getUserByIdModel = exports.getAllUsersModel = void 0;
 const connection_1 = require("./connection");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const userFields = `
+    json_build_object(
+        'id', u.id,
+        'apelido', u.apelido,
+        'email', u.email,
+        'created_at', u.created_at,
+        'updated_at', u.updated_at,
+        'altura', u.altura,
+        'peso', u.peso,
+        'imc', u.imc,
+        'treinos', (
+            SELECT
+                json_agg(
+                    json_build_object(
+                        'id', t.id,
+                        'nome_treino', t.nome_treino,
+                        'exercicios', (
+                            SELECT
+                                json_agg(
+                                    json_build_object(
+                                        'id', e.id,
+                                        'nome_exercicio', e.nome_exercicio
+                                    )
+                                )
+                            FROM
+                                tb_exercicio e
+                            WHERE
+                                e.id_treino = t.id
+                        )
+                    )
+                )
+            FROM
+                tb_treino t
+            INNER JOIN
+                tb_usuario_treino ut ON t.id = ut.id_treino
+            WHERE
+                ut.id_usuario = u.id
+        )
+    ) AS usuario_com_treinos
+`;
 const getAllUsersModel = (...args_1) => __awaiter(void 0, [...args_1], void 0, function* (page = 1, limit = 5) {
     const offset = (page - 1) * limit;
     const query = `
         SELECT
-            json_build_object(
-                'id', u.id,
-                'apelido', u.apelido,
-                'email', u.email,
-                'created_at', u.created_at,
-                'updated_at', u.updated_at,
-                'altura', u.altura,
-                'peso', u.peso,
-                'imc', u.imc,
-                'treinos', (
-                    SELECT
-                        json_agg(
-                            json_build_object(
-                                'id', t.id,
-                                'nome_treino', t.nome_treino,
-                                'exercicios', (
-                                    SELECT
-                                        json_agg(
-                                            json_build_object(
-                                                'id', e.id,
-                                                'nome_exercicio', e.nome_exercicio
-                                            )
-                                        )
-                                    FROM
-                                        tb_exercicio e
-                                    WHERE
-                                        e.id_treino = t.id
-                                )
-                            )
-                        )
-                    FROM
-                        tb_treino t
-                    INNER JOIN
-                        tb_usuario_treino ut ON t.id = ut.id_treino
-                    WHERE
-                        ut.id_usuario = u.id
-                )
-            ) AS usuario_com_treinos
-        FROM
-            tb_usuario u
-        ORDER BY
-            u.id ASC
+            ${userFields}
+        FROM tb_usuario u
+        ORDER BY u.id ASC
         LIMIT $1 OFFSET $2
     `;
     const values = [limit, offset];
@@ -71,50 +72,10 @@ exports.getAllUsersModel = getAllUsersModel;
 const getUserByIdModel = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const query = `
         SELECT
-            json_build_object(
-                'id', u.id,
-                'apelido', u.apelido,
-                'email', u.email,
-                'created_at', u.created_at,
-                'updated_at', u.updated_at,
-                'altura', u.altura,
-                'peso', u.peso,
-                'imc', u.imc,
-                'treinos', (
-                    SELECT
-                        json_agg(
-                            json_build_object(
-                                'id', t.id,
-                                'nome_treino', t.nome_treino,
-                                'exercicios', (
-                                    SELECT
-                                        json_agg(
-                                            json_build_object(
-                                                'id', e.id,
-                                                'nome_exercicio', e.    nome_exercicio
-                                            )
-                                        )
-                                    FROM
-                                        tb_exercicio e
-                                    WHERE
-                                        e.id_treino = t.id
-                                )
-                            )
-                        )
-                    FROM
-                        tb_treino t
-                    INNER JOIN
-                        tb_usuario_treino ut ON t.id = ut.id_treino
-                    WHERE
-                        ut.id_usuario = u.id
-                )
-            ) AS usuario_com_treinos
-        FROM
-            tb_usuario u
-        WHERE
-            u.id = $1
-        ORDER BY
-            u.id ASC
+            ${userFields}
+        FROM tb_usuario u
+        WHERE u.id = $1
+        ORDER BY u.id ASC
     `;
     const user = yield connection_1.pool.query(query, [id]);
     return user.rows[0];
@@ -156,13 +117,13 @@ const updateUserModel = (id, user) => __awaiter(void 0, void 0, void 0, function
     `;
     const values = [email, apelido, senhaHashed, altura, peso, imc, id];
     const updateUser = yield connection_1.pool.query(query, values);
-    return updateUser;
+    return updateUser.rows[0];
 });
 exports.updateUserModel = updateUserModel;
 const deleteUserModel = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const query = "DELETE FROM tb_usuario WHERE id = $1";
     const removeUser = yield connection_1.pool.query(query, [id]);
-    return removeUser;
+    return removeUser.rows[0];
 });
 exports.deleteUserModel = deleteUserModel;
 const deleteUserTreinoModel = (idUser, idTreino) => __awaiter(void 0, void 0, void 0, function* () {
@@ -171,6 +132,6 @@ const deleteUserTreinoModel = (idUser, idTreino) => __awaiter(void 0, void 0, vo
     const result = yield connection_1.pool.query(query, values);
     if (result.rowCount === 0)
         throw new Error("Treino não encontrado para o usuário especificado");
-    return result;
+    return result.rows[0];
 });
 exports.deleteUserTreinoModel = deleteUserTreinoModel;
