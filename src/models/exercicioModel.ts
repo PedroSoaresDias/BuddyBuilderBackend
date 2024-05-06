@@ -26,10 +26,8 @@ export const addExercicioModel = async (exercicio: Exercicio) => {
 
 export const updateExercicioModel = async (id: number, exercicio: Exercicio) => {
     const { nomeExercicio } = exercicio;
-
     const query = "UPDATE tb_exercicio SET nome_exercicio = $1 WHERE id = $2";
     const values = [nomeExercicio, id];
-
     const updateExercicio = await pool.query(query, values);
     return updateExercicio;
 }

@@ -15,55 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUserTreinoModel = exports.deleteUserModel = exports.updateUserModel = exports.addUserTreinoModel = exports.findUserByEmailModel = exports.addUserModel = exports.getUserByIdModel = exports.getAllUsersModel = void 0;
 const connection_1 = require("./connection");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const userFields = `
-    json_build_object(
-        'id', u.id,
-        'apelido', u.apelido,
-        'email', u.email,
-        'created_at', u.created_at,
-        'updated_at', u.updated_at,
-        'altura', u.altura,
-        'peso', u.peso,
-        'imc', u.imc,
-        'treinos', (
-            SELECT
-                json_agg(
-                    json_build_object(
-                        'id', t.id,
-                        'nome_treino', t.nome_treino,
-                        'exercicios', (
-                            SELECT
-                                json_agg(
-                                    json_build_object(
-                                        'id', e.id,
-                                        'nome_exercicio', e.nome_exercicio
-                                    )
-                                )
-                            FROM
-                                tb_exercicio e
-                            WHERE
-                                e.id_treino = t.id
-                        )
-                    )
-                )
-            FROM
-                tb_treino t
-            INNER JOIN
-                tb_usuario_treino ut ON t.id = ut.id_treino
-            WHERE
-                ut.id_usuario = u.id
-        )
-    ) AS usuario_com_treinos
-`;
-const baseQuery = `
-    SELECT
-        ${userFields}
-    FROM tb_usuario u
-`;
+const queries_1 = require("./queries");
 const getAllUsersModel = (...args_1) => __awaiter(void 0, [...args_1], void 0, function* (page = 1, limit = 5) {
     const offset = (page - 1) * limit;
     const query = `
-        ${baseQuery}
+        ${queries_1.userBaseQuery}
         ORDER BY u.id ASC
         LIMIT $1 OFFSET $2
     `;
@@ -74,7 +30,7 @@ const getAllUsersModel = (...args_1) => __awaiter(void 0, [...args_1], void 0, f
 exports.getAllUsersModel = getAllUsersModel;
 const getUserByIdModel = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const query = `
-        ${baseQuery}
+        ${queries_1.userBaseQuery}
         WHERE u.id = $1
         ORDER BY u.id ASC
     `;

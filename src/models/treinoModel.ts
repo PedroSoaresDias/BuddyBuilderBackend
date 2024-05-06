@@ -1,53 +1,25 @@
 import { pool } from "./connection";
+import { treinoBaseQuery } from "./queries";
 
 type Treino = {
     nomeTreino: string;
 }
 
-const treinoFields: string = `
-    json_build_object(
-        'id', t.id,
-        'nome_treino', t.nome_treino,
-        'exercicios', (
-            SELECT
-                json_agg(
-                    json_build_object(
-                        'id', e.id,
-                        'nome_exercicio', e.nome_exercicio
-                    )
-                )
-            FROM
-                tb_exercicio e
-            WHERE
-                e.id_treino = t.id
-        )
-    ) AS treino_com_exercicios
-`;
-
-const baseQuery: string = `
-    SELECT
-        ${treinoFields}
-    FROM tb_treino t
-`;
-
 export const getAllTreinosModel = async (page: number = 1, limit: number = 5): Promise<any[]> => {
     const offset: number = (page - 1) * limit;
-
     const query = `
-        ${baseQuery}
+        ${treinoBaseQuery}
         ORDER BY t.id ASC
         LIMIT $1 OFFSET $2
     `;
-
     const values = [limit, offset];
-
     const treino = await pool.query(query, values);
     return treino.rows;
 }
 
 export const getTreinoByIdModel = async (id: number): Promise<any> => {
     const query = `
-        ${baseQuery}
+        ${treinoBaseQuery}
         WHERE t.id = $1
         ORDER BY t.id ASC
     `;

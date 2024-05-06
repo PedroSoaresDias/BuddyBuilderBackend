@@ -11,34 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTreinoModel = exports.updateTreinoModel = exports.addTreinoModel = exports.getTreinoByIdModel = exports.getAllTreinosModel = void 0;
 const connection_1 = require("./connection");
-const treinoFields = `
-    json_build_object(
-        'id', t.id,
-        'nome_treino', t.nome_treino,
-        'exercicios', (
-            SELECT
-                json_agg(
-                    json_build_object(
-                        'id', e.id,
-                        'nome_exercicio', e.nome_exercicio
-                    )
-                )
-            FROM
-                tb_exercicio e
-            WHERE
-                e.id_treino = t.id
-        )
-    ) AS treino_com_exercicios
-`;
-const baseQuery = `
-    SELECT
-        ${treinoFields}
-    FROM tb_treino t
-`;
+const queries_1 = require("./queries");
 const getAllTreinosModel = (...args_1) => __awaiter(void 0, [...args_1], void 0, function* (page = 1, limit = 5) {
     const offset = (page - 1) * limit;
     const query = `
-        ${baseQuery}
+        ${queries_1.treinoBaseQuery}
         ORDER BY t.id ASC
         LIMIT $1 OFFSET $2
     `;
@@ -49,7 +26,7 @@ const getAllTreinosModel = (...args_1) => __awaiter(void 0, [...args_1], void 0,
 exports.getAllTreinosModel = getAllTreinosModel;
 const getTreinoByIdModel = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const query = `
-        ${baseQuery}
+        ${queries_1.treinoBaseQuery}
         WHERE t.id = $1
         ORDER BY t.id ASC
     `;
