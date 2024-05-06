@@ -16,3 +16,4 @@ exports.routerUser.post("/users/login", userMiddleware_1.validateFieldEmail, use
 exports.routerUser.post("/users/:idUser/treinos/:idTreino", authMiddleware_1.verifyToken, userMiddleware_1.validateFieldIdUser, userMiddleware_1.validateFieldIdTreino, userController_1.addUserTreino);
 exports.routerUser.put("/users/:id", authMiddleware_1.verifyToken, userMiddleware_1.validateFieldEmail, userMiddleware_1.validateFieldNickname, userMiddleware_1.validateFieldPassword, userController_1.updateUser);
 exports.routerUser.delete("/users/:id", authMiddleware_1.verifyToken, userController_1.deleteUser);
+exports.routerUser.delete("/users/:idUser/treinos/:idTreino", authMiddleware_1.verifyToken, userController_1.deleteUserTreino);

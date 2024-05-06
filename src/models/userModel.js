@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserModel = exports.updateUserModel = exports.addUserTreinoModel = exports.findUserByEmailModel = exports.addUserModel = exports.getUserByIdModel = exports.getAllUsersModel = void 0;
+exports.deleteUserTreinoModel = exports.deleteUserModel = exports.updateUserModel = exports.addUserTreinoModel = exports.findUserByEmailModel = exports.addUserModel = exports.getUserByIdModel = exports.getAllUsersModel = void 0;
 const connection_1 = require("./connection");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const getAllUsersModel = (...args_1) => __awaiter(void 0, [...args_1], void 0, function* (page = 1, limit = 5) {
@@ -165,3 +165,12 @@ const deleteUserModel = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return removeUser;
 });
 exports.deleteUserModel = deleteUserModel;
+const deleteUserTreinoModel = (idUser, idTreino) => __awaiter(void 0, void 0, void 0, function* () {
+    const query = "DELETE FROM tb_usuario_treino WHERE id_usuario = $1 AND id_treino = $2";
+    const values = [idUser, idTreino];
+    const result = yield connection_1.pool.query(query, values);
+    if (result.rowCount === 0)
+        throw new Error("Treino não encontrado para o usuário especificado");
+    return result;
+});
+exports.deleteUserTreinoModel = deleteUserTreinoModel;

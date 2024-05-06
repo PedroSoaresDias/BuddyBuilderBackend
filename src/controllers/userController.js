@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUser = exports.addUserTreino = exports.findUserByEmail = exports.addUser = exports.getUserById = exports.getAllUsers = void 0;
+exports.deleteUserTreino = exports.deleteUser = exports.updateUser = exports.addUserTreino = exports.findUserByEmail = exports.addUser = exports.getUserById = exports.getAllUsers = void 0;
 const userModel_1 = require("../models/userModel");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -122,3 +122,20 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteUser = deleteUser;
+const deleteUserTreino = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { idUser, idTreino } = req.params;
+        yield (0, userModel_1.deleteUserTreinoModel)(parseInt(idUser), parseInt(idTreino));
+        return res.status(204).json();
+    }
+    catch (err) {
+        if (err.message === "Treino não encontrado para o usuário especificado") {
+            return res.status(404).json({ error: "Treino não encontrado para o usuário especificado." });
+        }
+        else {
+            console.error("Erro ao remover o treino do usuário no banco de dados: ", err);
+            return res.status(500).json({ error: "Erro ao remover o treino do usuário no banco de dados." });
+        }
+    }
+});
+exports.deleteUserTreino = deleteUserTreino;

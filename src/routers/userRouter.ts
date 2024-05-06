@@ -7,7 +7,8 @@ import {
     updateUser,
     deleteUser,
     addUserTreino,
-    findUserByEmail
+    findUserByEmail,
+    deleteUserTreino
 } from "../controllers/userController";
 
 import {
@@ -55,3 +56,8 @@ routerUser.put("/users/:id",
 );
 
 routerUser.delete("/users/:id", verifyToken, deleteUser);
+
+routerUser.delete("/users/:idUser/treinos/:idTreino",
+    verifyToken,
+    deleteUserTreino
+);

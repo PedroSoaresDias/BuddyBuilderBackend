@@ -169,3 +169,13 @@ export const deleteUserModel = async (id: number) => {
     const removeUser = await pool.query(query, [id]);
     return removeUser;
 }
+
+export const deleteUserTreinoModel = async (idUser: number, idTreino: number) => {
+    const query = "DELETE FROM tb_usuario_treino WHERE id_usuario = $1 AND id_treino = $2";
+    const values = [idUser, idTreino];
+    const result = await pool.query(query, values);
+
+    if (result.rowCount === 0) throw new Error("Treino não encontrado para o usuário especificado");
+
+    return result;
+}
