@@ -12,8 +12,8 @@ import { verifyToken } from "../middlewares/authMiddleware";
 
 export const routerExercicio = express.Router();
 
-routerExercicio.get("/exercicio", getAllExercicios);
-routerExercicio.get("/exercicio/:id", getExercicioById);
+routerExercicio.get("/exercicio", verifyToken, getAllExercicios);
+routerExercicio.get("/exercicio/:id", verifyToken, getExercicioById);
 routerExercicio.post("/exercicio", verifyToken, validateFieldExercicio, validateFieldIdTreino, addExercicio);
 routerExercicio.put("/exercicio/:id", verifyToken, validateFieldExercicio, validateFieldIdTreino, updateExercicio);
 routerExercicio.delete("/exercicio/:id", verifyToken, deleteExercicio);

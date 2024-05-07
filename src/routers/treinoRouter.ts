@@ -6,8 +6,8 @@ import { verifyToken } from "../middlewares/authMiddleware";
 
 export const routerTreino = express.Router();
 
-routerTreino.get("/treino", getAllTreinos);
-routerTreino.get("/treino/:id", getTreinoById);
+routerTreino.get("/treino",verifyToken, getAllTreinos);
+routerTreino.get("/treino/:id",verifyToken, getTreinoById);
 routerTreino.post("/treino", verifyToken, validateFieldTreino, addTreino);
 routerTreino.put("/treino/:id", verifyToken, validateFieldTreino, updateTreino);
 routerTreino.delete("/treino/:id", verifyToken, deleteTreino);
