@@ -61,16 +61,14 @@ const findUserByEmail = (req, res) => __awaiter(void 0, void 0, void 0, function
     const { senha } = req.body;
     try {
         const user = yield (0, userModel_1.findUserByEmailModel)(req.body);
-        if (!user) {
+        if (!user)
             return res.status(401).json({ error: "E-mail inválido." });
-        }
         const senhaEhValida = yield bcrypt_1.default.compareSync(senha, user.senha);
-        if (!senhaEhValida) {
+        if (!senhaEhValida)
             return res.status(401).json({ error: "Senha inválida." });
-        }
-        const token = jsonwebtoken_1.default.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRATION });
-        res.status(200).send({
-            userId: user.id,
+        const token = jsonwebtoken_1.default.sign({ id: user.id }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRATION });
+        res.status(200).json({
+            id: user.id,
             message: "Login efetuado com sucesso.",
             token: token
         });

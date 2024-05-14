@@ -2,16 +2,21 @@ import { pool } from "./connection";
 import bcrypt from "bcrypt";
 import { userBaseQuery } from "./queries";
 
-type User = {
+export type User = {
+    id: number;
     email: string;
     apelido: string;
     senha: string;
     altura: number;
     peso: number;
     imc: number;
+    usuario_com_treinos: {
+        id: number;
+        nome_treino: string
+    }
 }
 
-export const getAllUsersModel = async (page: number = 1, limit: number = 5): Promise<any[]> => {
+export const getAllUsersModel = async (page: number = 1, limit: number = 5): Promise<User[]> => {
     const offset: number = (page - 1) * limit;
     const query = `
         ${userBaseQuery}
@@ -23,14 +28,13 @@ export const getAllUsersModel = async (page: number = 1, limit: number = 5): Pro
     return user.rows;
 }
 
-export const getUserByIdModel = async (id: number): Promise<any> => {
+export const getUserByIdModel = async (id: number): Promise<User> => {
     const query = `
         ${userBaseQuery}
         WHERE u.id = $1
-        ORDER BY u.id ASC
     `;
     const user = await pool.query(query, [id]);
-    return user.rows[0];
+    return user.rows[0] as User;
 }
 
 export const addUserModel = async (user: User) => {

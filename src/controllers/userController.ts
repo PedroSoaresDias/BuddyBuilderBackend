@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAllUsersModel, getUserByIdModel, addUserModel, addUserTreinoModel, updateUserModel, deleteUserModel, findUserByEmailModel, deleteUserTreinoModel } from "../models/userModel";
+import { getAllUsersModel, getUserByIdModel, addUserModel, addUserTreinoModel, updateUserModel, deleteUserModel, findUserByEmailModel, deleteUserTreinoModel, User } from "../models/userModel";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -54,21 +54,18 @@ export const findUserByEmail = async (req: Request, res: Response) => {
     const { senha } = req.body;
     
     try {
-        const user = await findUserByEmailModel(req.body);
-        if (!user) {
-            return res.status(401).json({ error: "E-mail inválido." });
-        }
+        const user: User = await findUserByEmailModel(req.body);
+        if (!user) return res.status(401).json({ error: "E-mail inválido." });
 
         const senhaEhValida = await bcrypt.compareSync(senha, user.senha);
 
-        if (!senhaEhValida) {
-            return res.status(401).json({ error: "Senha inválida." });
-        }
+        if (!senhaEhValida) return res.status(401).json({ error: "Senha inválida." });
 
-        const token = jwt.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRATION });
 
-        res.status(200).send({
-            userId: user.id,
+        const token = jwt.sign({ id: user.id }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRATION });
+
+        res.status(200).json({
+            id: user.id,
             message: "Login efetuado com sucesso.",
             token: token
         });

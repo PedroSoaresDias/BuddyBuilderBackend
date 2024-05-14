@@ -32,7 +32,6 @@ const getUserByIdModel = (id) => __awaiter(void 0, void 0, void 0, function* () 
     const query = `
         ${queries_1.userBaseQuery}
         WHERE u.id = $1
-        ORDER BY u.id ASC
     `;
     const user = yield connection_1.pool.query(query, [id]);
     return user.rows[0];
