@@ -34,7 +34,7 @@ export const getUserByIdModel = async (id: number): Promise<User> => {
         WHERE u.id = $1
     `;
     const user = await pool.query(query, [id]);
-    return user.rows[0] as User;
+    return user.rows[0];
 }
 
 export const addUserModel = async (user: User) => {
