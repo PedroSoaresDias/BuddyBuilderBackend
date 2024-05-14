@@ -68,6 +68,7 @@ export const findUserByEmail = async (req: Request, res: Response) => {
         const token = jwt.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRATION });
 
         res.status(200).send({
+            userId: user.id,
             message: "Login efetuado com sucesso.",
             token: token
         });

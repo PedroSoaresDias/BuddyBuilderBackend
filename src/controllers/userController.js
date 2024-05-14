@@ -70,6 +70,7 @@ const findUserByEmail = (req, res) => __awaiter(void 0, void 0, void 0, function
         }
         const token = jsonwebtoken_1.default.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRATION });
         res.status(200).send({
+            userId: user.id,
             message: "Login efetuado com sucesso.",
             token: token
         });
