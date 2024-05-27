@@ -8,7 +8,8 @@ import {
     deleteUser,
     addUserTreino,
     findUserByEmail,
-    deleteUserTreino
+    deleteUserTreino,
+    updateIMC
 } from "../controllers/userController";
 
 import {
@@ -53,6 +54,11 @@ routerUser.put("/users/:id",
     validateFieldNickname,
     validateFieldPassword,
     updateUser
+);
+
+routerUser.put("/users/:id/imc",
+    verifyToken,
+    updateIMC
 );
 
 routerUser.delete("/users/:id", verifyToken, deleteUser);

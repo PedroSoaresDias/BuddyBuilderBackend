@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserTreino = exports.deleteUser = exports.updateUser = exports.addUserTreino = exports.findUserByEmail = exports.addUser = exports.getUserById = exports.getAllUsers = void 0;
+exports.deleteUserTreino = exports.deleteUser = exports.updateIMC = exports.updateUser = exports.addUserTreino = exports.findUserByEmail = exports.addUser = exports.getUserById = exports.getAllUsers = void 0;
 const userModel_1 = require("../models/userModel");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -106,6 +106,24 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.updateUser = updateUser;
+const updateIMC = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const { altura, peso, imc } = req.body;
+        const userById = yield (0, userModel_1.getUserByIdModel)(parseInt(id));
+        if (!userById)
+            return res.status(404).json({ message: "Usuário não encontrado" });
+        if (!altura || !peso || !imc) {
+            return res.status(400).json({ error: "Campos de altura, peso e IMC são necessários" });
+        }
+        yield (0, userModel_1.updateIMCModel)(parseInt(id), altura, peso, imc);
+    }
+    catch (err) {
+        console.error("Erro ao atualizar o IMC do usuário no banco de dados: ", err);
+        return res.status(500).json({ error: "Erro ao atualizar o IMC do usuário no banco de dados." });
+    }
+});
+exports.updateIMC = updateIMC;
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;

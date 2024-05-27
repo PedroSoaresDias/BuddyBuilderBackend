@@ -76,6 +76,18 @@ export const updateUserModel = async (id: number, user: User) => {
     return updateUser.rows[0];
 }
 
+export const updateIMCModel = async (id: number, altura: number, peso: number, imc: number) => {
+    const query = `
+        UPDATE tb_usuario SET
+        altura = $1, peso = $2, imc = $3, updated_at = CURRENT_TIMESTAMP
+        WHERE id = $4
+    `;
+
+    const values = [altura, peso, imc, id];
+    const updateUser = await pool.query(query, values);
+    return updateUser.rowCount;
+}
+
 export const deleteUserModel = async (id: number) => {
     const query = "DELETE FROM tb_usuario WHERE id = $1";
     const removeUser = await pool.query(query, [id]);

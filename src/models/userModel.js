@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserTreinoModel = exports.deleteUserModel = exports.updateUserModel = exports.addUserTreinoModel = exports.findUserByEmailModel = exports.addUserModel = exports.getUserByIdModel = exports.getAllUsersModel = void 0;
+exports.deleteUserTreinoModel = exports.deleteUserModel = exports.updateIMCModel = exports.updateUserModel = exports.addUserTreinoModel = exports.findUserByEmailModel = exports.addUserModel = exports.getUserByIdModel = exports.getAllUsersModel = void 0;
 const connection_1 = require("./connection");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const queries_1 = require("./queries");
@@ -76,6 +76,17 @@ const updateUserModel = (id, user) => __awaiter(void 0, void 0, void 0, function
     return updateUser.rows[0];
 });
 exports.updateUserModel = updateUserModel;
+const updateIMCModel = (id, altura, peso, imc) => __awaiter(void 0, void 0, void 0, function* () {
+    const query = `
+        UPDATE tb_usuario SET
+        altura = $1, peso = $2, imc = $3, updated_at = CURRENT_TIMESTAMP
+        WHERE id = $4
+    `;
+    const values = [altura, peso, imc, id];
+    const updateUser = yield connection_1.pool.query(query, values);
+    return updateUser.rowCount;
+});
+exports.updateIMCModel = updateIMCModel;
 const deleteUserModel = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const query = "DELETE FROM tb_usuario WHERE id = $1";
     const removeUser = yield connection_1.pool.query(query, [id]);
