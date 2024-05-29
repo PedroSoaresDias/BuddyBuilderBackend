@@ -27,11 +27,17 @@ export const getTreinoByIdModel = async (id: number): Promise<any> => {
     return treino.rows[0];
 }
 
-export const addTreinoModel = async (treino: Treino) => {
-    const { nomeTreino } = treino;
-    const query = "INSERT INTO tb_treino(nome_treino) VALUES($1)";
-    const addTreino = await pool.query(query, [nomeTreino]);
-    return addTreino.rows[0];
+export const addTreinoModel = async (nomeTreino: string, exercicios: any[]) => {
+    const treinoQuery = "INSERT INTO tb_treino(nome_treino) VALUES($1) RETURNING id";
+    const resultadoTreino = await pool.query(treinoQuery, [nomeTreino]);
+    const treinoId = resultadoTreino.rows[0].id;
+
+    const exercicioQuery = "INSERT INTO tb_exercicio(nome_exercicio, id_treino) VALUES($1, $2)";
+    for (let exercicio of exercicios) {
+        await pool.query(exercicioQuery, [exercicio.nomeExercicio, treinoId]);
+    }
+
+    return { id: treinoId };
 }
 
 export const updateTreinoModel = async (id: number, treino: Treino) => {

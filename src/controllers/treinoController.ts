@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { getAllTreinosModel, getTreinoByIdModel, addTreinoModel, updateTreinoModel, deleteTreinoModel } from "../models/treinoModel";
+import { addExercicioModel } from "../models/exercicioModel";
 
 export const getAllTreinos = async (req: Request, res: Response) => {
     const page = req.query.page || 1;
@@ -30,8 +31,10 @@ export const getTreinoById = async (req: Request, res: Response) => {
 
 export const addTreino = async (req: Request, res: Response) => {
     try {
-        const addTreino = await addTreinoModel(req.body);
-        return res.status(201).json(addTreino);
+        const { nomeTreino, exercicios } = req.body;
+        const resultado = await addTreinoModel(nomeTreino, exercicios);
+
+        return res.status(201).json(resultado);
     } catch (err) {
         console.error("Erro ao adicionar um novo treino ao banco de dados.", err);
         return res.status(500).json({ error: "Erro ao adicionar um novo treino ao banco de dados." });

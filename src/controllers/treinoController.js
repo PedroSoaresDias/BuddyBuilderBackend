@@ -42,8 +42,9 @@ const getTreinoById = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.getTreinoById = getTreinoById;
 const addTreino = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const addTreino = yield (0, treinoModel_1.addTreinoModel)(req.body);
-        return res.status(201).json(addTreino);
+        const { nomeTreino, exercicios } = req.body;
+        const resultado = yield (0, treinoModel_1.addTreinoModel)(nomeTreino, exercicios);
+        return res.status(201).json(resultado);
     }
     catch (err) {
         console.error("Erro ao adicionar um novo treino ao banco de dados.", err);
