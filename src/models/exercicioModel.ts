@@ -37,3 +37,8 @@ export const deleteExercicioModel = async (id: number) => {
     const deleteExercicio = pool.query(query, [id]);
     return deleteExercicio;
 }
+
+export const deleteExercicioByTreinoIdModel = async (treinoId: number) => {
+    const query = "DELETE FROM tb_exercicio WHERE id_treino = $1";
+    await pool.query(query, [treinoId]);
+}

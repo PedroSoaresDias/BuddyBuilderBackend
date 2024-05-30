@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteExercicioModel = exports.updateExercicioModel = exports.addExercicioModel = exports.getExercicioByIdModel = exports.getAllExerciciosModel = void 0;
+exports.deleteExercicioByTreinoIdModel = exports.deleteExercicioModel = exports.updateExercicioModel = exports.addExercicioModel = exports.getExercicioByIdModel = exports.getAllExerciciosModel = void 0;
 const connection_1 = require("./connection");
 const getAllExerciciosModel = (...args_1) => __awaiter(void 0, [...args_1], void 0, function* (page = 1, limit = 5) {
     const offset = (page - 1) * limit;
@@ -44,3 +44,8 @@ const deleteExercicioModel = (id) => __awaiter(void 0, void 0, void 0, function*
     return deleteExercicio;
 });
 exports.deleteExercicioModel = deleteExercicioModel;
+const deleteExercicioByTreinoIdModel = (treinoId) => __awaiter(void 0, void 0, void 0, function* () {
+    const query = "DELETE FROM tb_exercicio WHERE id_treino = $1";
+    yield connection_1.pool.query(query, [treinoId]);
+});
+exports.deleteExercicioByTreinoIdModel = deleteExercicioByTreinoIdModel;

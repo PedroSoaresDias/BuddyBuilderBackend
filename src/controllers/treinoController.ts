@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getAllTreinosModel, getTreinoByIdModel, addTreinoModel, updateTreinoModel, deleteTreinoModel } from "../models/treinoModel";
-import { addExercicioModel } from "../models/exercicioModel";
+import { deleteExercicioByTreinoIdModel } from "../models/exercicioModel";
 
 export const getAllTreinos = async (req: Request, res: Response) => {
     const page = req.query.page || 1;
@@ -60,6 +60,8 @@ export const deleteTreino = async (req: Request, res: Response) => {
         const { id } = req.params;
         const treinoById = await getTreinoByIdModel(parseInt(id));
         if (!treinoById) return res.status(404).json({ message: "Treino não encontrado." });
+
+        await deleteExercicioByTreinoIdModel(parseInt(id))
 
         await deleteTreinoModel(parseInt(id));
         return res.status(204).json();

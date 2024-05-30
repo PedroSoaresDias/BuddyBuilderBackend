@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTreino = exports.updateTreino = exports.addTreino = exports.getTreinoById = exports.getAllTreinos = void 0;
 const treinoModel_1 = require("../models/treinoModel");
+const exercicioModel_1 = require("../models/exercicioModel");
 const getAllTreinos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const page = req.query.page || 1;
     const limit = req.query.limit || 5;
@@ -73,6 +74,7 @@ const deleteTreino = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const treinoById = yield (0, treinoModel_1.getTreinoByIdModel)(parseInt(id));
         if (!treinoById)
             return res.status(404).json({ message: "Treino não encontrado." });
+        yield (0, exercicioModel_1.deleteExercicioByTreinoIdModel)(parseInt(id));
         yield (0, treinoModel_1.deleteTreinoModel)(parseInt(id));
         return res.status(204).json();
     }
