@@ -9,15 +9,20 @@ import {
     addUserTreino,
     findUserByEmail,
     deleteUserTreino,
-    updateIMC
+    updateIMC,
+    updateTreinosFinalizados
 } from "../controllers/userController";
 
 import {
+    validateFieldAltura,
     validateFieldEmail,
     validateFieldIdTreino,
     validateFieldIdUser,
+    validateFieldIMC,
     validateFieldNickname,
     validateFieldPassword,
+    validateFieldPeso,
+    validateFieldTreinosFinalizados,
 } from "../middlewares/userMiddleware";
 
 import { verifyToken } from "../middlewares/authMiddleware";
@@ -58,7 +63,16 @@ routerUser.put("/users/:id",
 
 routerUser.put("/users/:id/imc",
     verifyToken,
+    validateFieldAltura,
+    validateFieldPeso,
+    validateFieldIMC,
     updateIMC
+);
+
+routerUser.put("/users/:id/treinosFinalizados",
+    verifyToken,
+    validateFieldTreinosFinalizados,
+    updateTreinosFinalizados
 );
 
 routerUser.delete("/users/:id", verifyToken, deleteUser);

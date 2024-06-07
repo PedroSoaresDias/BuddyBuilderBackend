@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserTreinoModel = exports.deleteUserModel = exports.updateIMCModel = exports.updateUserModel = exports.addUserTreinoModel = exports.findUserByEmailModel = exports.addUserModel = exports.getUserByIdModel = exports.getAllUsersModel = void 0;
+exports.deleteUserTreinoModel = exports.deleteUserModel = exports.updateTreinosFinalizadosModel = exports.updateIMCModel = exports.updateUserModel = exports.addUserTreinoModel = exports.findUserByEmailModel = exports.addUserModel = exports.getUserByIdModel = exports.getAllUsersModel = void 0;
 const connection_1 = require("./connection");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const queries_1 = require("./queries");
@@ -42,10 +42,10 @@ const addUserModel = (user) => __awaiter(void 0, void 0, void 0, function* () {
     const senhaHashed = yield bcrypt_1.default.hash(senha, 10);
     const query = `
         INSERT INTO tb_usuario
-        (email, apelido, senha, created_at, updated_at, altura, peso, imc)
-        VALUES ($1, $2, $3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $4, $5, $6)
+        (email, apelido, senha, created_at, updated_at, altura, peso, imc, treinos_finalizados)
+        VALUES ($1, $2, $3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $4, $5, $6, $7)
     `;
-    const values = [email, apelido, senhaHashed, altura, peso, imc];
+    const values = [email, apelido, senhaHashed, altura, peso, imc, 0];
     const addUser = yield connection_1.pool.query(query, values);
     return addUser.rows[0];
 });
@@ -64,14 +64,14 @@ const addUserTreinoModel = (idUser, idTreino) => __awaiter(void 0, void 0, void 
 });
 exports.addUserTreinoModel = addUserTreinoModel;
 const updateUserModel = (id, user) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, apelido, senha, altura, peso, imc } = user;
+    const { email, apelido, senha, altura, peso, imc, treinosFinalizados } = user;
     const senhaHashed = yield bcrypt_1.default.hash(senha, 10);
     const query = `
         UPDATE tb_usuario SET
-        email = $1, apelido = $2, senha = $3, updated_at = CURRENT_TIMESTAMP, altura = $4, peso = $5, imc = $6
-        WHERE id = $7
+        email = $1, apelido = $2, senha = $3, updated_at = CURRENT_TIMESTAMP, altura = $4, peso = $5, imc = $6, treinos_finalizados = $7
+        WHERE id = $8
     `;
-    const values = [email, apelido, senhaHashed, altura, peso, imc, id];
+    const values = [email, apelido, senhaHashed, altura, peso, imc, treinosFinalizados, id];
     const updateUser = yield connection_1.pool.query(query, values);
     return updateUser.rows[0];
 });
@@ -87,6 +87,17 @@ const updateIMCModel = (id, altura, peso, imc) => __awaiter(void 0, void 0, void
     return updateUser.rowCount;
 });
 exports.updateIMCModel = updateIMCModel;
+const updateTreinosFinalizadosModel = (id, treinosFinalizados) => __awaiter(void 0, void 0, void 0, function* () {
+    const query = `
+        UPDATE tb_usuario SET
+        treinos_finalizados = $1, updated_at = CURRENT_TIMESTAMP
+        WHERE id = $2
+    `;
+    const values = [treinosFinalizados, id];
+    const updateUser = yield connection_1.pool.query(query, values);
+    return updateUser.rowCount;
+});
+exports.updateTreinosFinalizadosModel = updateTreinosFinalizadosModel;
 const deleteUserModel = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const query = "DELETE FROM tb_usuario WHERE id = $1";
     const removeUser = yield connection_1.pool.query(query, [id]);

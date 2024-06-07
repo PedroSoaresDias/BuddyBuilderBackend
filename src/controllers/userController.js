@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserTreino = exports.deleteUser = exports.updateIMC = exports.updateUser = exports.addUserTreino = exports.findUserByEmail = exports.addUser = exports.getUserById = exports.getAllUsers = void 0;
+exports.deleteUserTreino = exports.deleteUser = exports.updateTreinosFinalizados = exports.updateIMC = exports.updateUser = exports.addUserTreino = exports.findUserByEmail = exports.addUser = exports.getUserById = exports.getAllUsers = void 0;
 const userModel_1 = require("../models/userModel");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -113,9 +113,9 @@ const updateIMC = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userById = yield (0, userModel_1.getUserByIdModel)(parseInt(id));
         if (!userById)
             return res.status(404).json({ message: "Usuário não encontrado" });
-        if (!altura || !peso || !imc) {
-            return res.status(400).json({ error: "Campos de altura, peso e IMC são necessários" });
-        }
+        // if (!altura || !peso || !imc) {
+        //     return res.status(400).json({ error: "Campos de altura, peso e IMC são necessários" });
+        // }
         yield (0, userModel_1.updateIMCModel)(parseInt(id), altura, peso, imc);
     }
     catch (err) {
@@ -124,6 +124,24 @@ const updateIMC = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.updateIMC = updateIMC;
+const updateTreinosFinalizados = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const { treinosFinalizados } = req.body;
+        const userById = yield (0, userModel_1.getUserByIdModel)(parseInt(id));
+        if (!userById)
+            return res.status(404).json({ message: "Usuário não encontrado" });
+        // if (!treinosFinalizados && treinosFinalizados !== 0) {
+        //     return res.status(400).json({ error: "O número de treinos finalizados é necessário." });
+        // }
+        yield (0, userModel_1.updateTreinosFinalizadosModel)(parseInt(id), treinosFinalizados);
+    }
+    catch (err) {
+        console.error("Erro ao atualizar o números de treinos finalizados do usuário no banco de dados: ", err);
+        return res.status(500).json({ error: "Erro ao atualizar o número de treinos finalizados do usuário no banco de dados." });
+    }
+});
+exports.updateTreinosFinalizados = updateTreinosFinalizados;
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;

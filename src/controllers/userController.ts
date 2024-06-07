@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAllUsersModel, getUserByIdModel, addUserModel, addUserTreinoModel, updateUserModel, deleteUserModel, findUserByEmailModel, deleteUserTreinoModel, User, updateIMCModel } from "../models/userModel";
+import { getAllUsersModel, getUserByIdModel, addUserModel, addUserTreinoModel, updateUserModel, deleteUserModel, findUserByEmailModel, deleteUserTreinoModel, User, updateIMCModel, updateTreinosFinalizadosModel } from "../models/userModel";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -110,14 +110,34 @@ export const updateIMC = async (req: Request, res: Response) => {
 
         if (!userById) return res.status(404).json({ message: "Usuário não encontrado" });
 
-        if (!altura || !peso || !imc) {
-            return res.status(400).json({ error: "Campos de altura, peso e IMC são necessários" });
-        }
+        // if (!altura || !peso || !imc) {
+        //     return res.status(400).json({ error: "Campos de altura, peso e IMC são necessários" });
+        // }
 
         await updateIMCModel(parseInt(id), altura, peso, imc);
     } catch (err) {
         console.error("Erro ao atualizar o IMC do usuário no banco de dados: ", err);
         return res.status(500).json({ error: "Erro ao atualizar o IMC do usuário no banco de dados." });
+    }
+}
+
+export const updateTreinosFinalizados = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { treinosFinalizados } = req.body;
+
+        const userById = await getUserByIdModel(parseInt(id));
+
+        if (!userById) return res.status(404).json({ message: "Usuário não encontrado" });
+
+        // if (!treinosFinalizados && treinosFinalizados !== 0) {
+        //     return res.status(400).json({ error: "O número de treinos finalizados é necessário." });
+        // }
+
+        await updateTreinosFinalizadosModel(parseInt(id), treinosFinalizados);
+    } catch (err) {
+        console.error("Erro ao atualizar o números de treinos finalizados do usuário no banco de dados: ", err);
+        return res.status(500).json({ error: "Erro ao atualizar o número de treinos finalizados do usuário no banco de dados." });
     }
 }
 

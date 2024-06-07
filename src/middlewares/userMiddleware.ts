@@ -111,3 +111,17 @@ export const validateFieldIMC = (req: Request, res: Response, next: NextFunction
 
     next();
 }
+
+export const validateFieldTreinosFinalizados = (req: Request, res: Response, next: NextFunction) => {
+    const { body } = req;
+
+    if (body.treinosFinalizados === undefined) {
+        return res.status(400).json({ message: 'O campo "treinos finalizado" é obrigatório.' });
+    }
+
+    if (body.treinosFinalizados === 0) {
+        return res.status(400).json({ message: 'O número de treinos finalizados atualizados não pode ser igual a 0.' });
+    }
+
+    next();
+}

@@ -10,6 +10,7 @@ export type User = {
     altura: number;
     peso: number;
     imc: number;
+    treinosFinalizados: number;
     usuario_com_treinos: {
         id: number;
         nome_treino: string
@@ -42,10 +43,10 @@ export const addUserModel = async (user: User) => {
     const senhaHashed = await bcrypt.hash(senha, 10);
     const query = `
         INSERT INTO tb_usuario
-        (email, apelido, senha, created_at, updated_at, altura, peso, imc)
-        VALUES ($1, $2, $3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $4, $5, $6)
+        (email, apelido, senha, created_at, updated_at, altura, peso, imc, treinos_finalizados)
+        VALUES ($1, $2, $3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $4, $5, $6, $7)
     `;
-    const values = [email, apelido, senhaHashed, altura, peso, imc];
+    const values = [email, apelido, senhaHashed, altura, peso, imc, 0];
     const addUser = await pool.query(query, values);
     return addUser.rows[0];
 }
@@ -64,14 +65,14 @@ export const addUserTreinoModel = async (idUser: number, idTreino: number) => {
 }
 
 export const updateUserModel = async (id: number, user: User) => {
-    const { email, apelido, senha, altura, peso, imc } = user;
+    const { email, apelido, senha, altura, peso, imc, treinosFinalizados } = user;
     const senhaHashed = await bcrypt.hash(senha, 10);
     const query = `
         UPDATE tb_usuario SET
-        email = $1, apelido = $2, senha = $3, updated_at = CURRENT_TIMESTAMP, altura = $4, peso = $5, imc = $6
-        WHERE id = $7
+        email = $1, apelido = $2, senha = $3, updated_at = CURRENT_TIMESTAMP, altura = $4, peso = $5, imc = $6, treinos_finalizados = $7
+        WHERE id = $8
     `;
-    const values = [email, apelido, senhaHashed, altura, peso, imc, id];
+    const values = [email, apelido, senhaHashed, altura, peso, imc, treinosFinalizados, id];
     const updateUser = await pool.query(query, values);
     return updateUser.rows[0];
 }
@@ -84,6 +85,18 @@ export const updateIMCModel = async (id: number, altura: number, peso: number, i
     `;
 
     const values = [altura, peso, imc, id];
+    const updateUser = await pool.query(query, values);
+    return updateUser.rowCount;
+}
+
+export const updateTreinosFinalizadosModel = async (id: number, treinosFinalizados: number) => {
+    const query = `
+        UPDATE tb_usuario SET
+        treinos_finalizados = $1, updated_at = CURRENT_TIMESTAMP
+        WHERE id = $2
+    `;
+
+    const values = [treinosFinalizados, id];
     const updateUser = await pool.query(query, values);
     return updateUser.rowCount;
 }

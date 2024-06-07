@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateFieldIMC = exports.validateFieldPeso = exports.validateFieldAltura = exports.validateFieldIdTreino = exports.validateFieldIdUser = exports.validateFieldPassword = exports.validateFieldNickname = exports.validateFieldEmail = void 0;
+exports.validateFieldTreinosFinalizados = exports.validateFieldIMC = exports.validateFieldPeso = exports.validateFieldAltura = exports.validateFieldIdTreino = exports.validateFieldIdUser = exports.validateFieldPassword = exports.validateFieldNickname = exports.validateFieldEmail = void 0;
 const validateFieldEmail = (req, res, next) => {
     const { body } = req;
     if (body.email === undefined) {
@@ -89,3 +89,14 @@ const validateFieldIMC = (req, res, next) => {
     next();
 };
 exports.validateFieldIMC = validateFieldIMC;
+const validateFieldTreinosFinalizados = (req, res, next) => {
+    const { body } = req;
+    if (body.treinosFinalizados === undefined) {
+        return res.status(400).json({ message: 'O campo "treinos finalizado" é obrigatório.' });
+    }
+    if (body.treinosFinalizados === 0) {
+        return res.status(400).json({ message: 'O número de treinos finalizados atualizados não pode ser igual a 0.' });
+    }
+    next();
+};
+exports.validateFieldTreinosFinalizados = validateFieldTreinosFinalizados;

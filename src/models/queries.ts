@@ -9,6 +9,7 @@ const userFields: string = `
         'altura', u.altura,
         'peso', u.peso,
         'imc', u.imc,
+        'treinos_finalizados', u.treinos_finalizados,
         'treinos', (
             SELECT
                 json_agg(

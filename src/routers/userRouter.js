@@ -15,6 +15,7 @@ exports.routerUser.post("/users/register", userMiddleware_1.validateFieldEmail, 
 exports.routerUser.post("/users/login", userMiddleware_1.validateFieldEmail, userMiddleware_1.validateFieldPassword, userController_1.findUserByEmail);
 exports.routerUser.post("/users/:idUser/treinos/:idTreino", authMiddleware_1.verifyToken, userMiddleware_1.validateFieldIdUser, userMiddleware_1.validateFieldIdTreino, userController_1.addUserTreino);
 exports.routerUser.put("/users/:id", authMiddleware_1.verifyToken, userMiddleware_1.validateFieldEmail, userMiddleware_1.validateFieldNickname, userMiddleware_1.validateFieldPassword, userController_1.updateUser);
-exports.routerUser.put("/users/:id/imc", authMiddleware_1.verifyToken, userController_1.updateIMC);
+exports.routerUser.put("/users/:id/imc", authMiddleware_1.verifyToken, userMiddleware_1.validateFieldAltura, userMiddleware_1.validateFieldPeso, userMiddleware_1.validateFieldIMC, userController_1.updateIMC);
+exports.routerUser.put("/users/:id/treinosFinalizados", authMiddleware_1.verifyToken, userMiddleware_1.validateFieldTreinosFinalizados, userController_1.updateTreinosFinalizados);
 exports.routerUser.delete("/users/:id", authMiddleware_1.verifyToken, userController_1.deleteUser);
 exports.routerUser.delete("/users/:idUser/treinos/:idTreino", authMiddleware_1.verifyToken, userController_1.deleteUserTreino);
